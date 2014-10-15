@@ -1,0 +1,31 @@
+{
+  "name": "react-tappable",
+  "version": "0.0.1",
+  "description": "Tappable Component for React",
+  "main": "lib/Tappable.js",
+  "author": "Jed Watson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JedWatson/react-tappable.git"
+  },
+  "dependencies": {
+    "hammerjs": "~2.0.4",
+    "react": "~0.11.2",
+    "reactify": "~0.14.0"
+  },
+  "browserify": {
+    "transform": ["reactify"]
+  },
+  "scripts": {
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "tap",
+    "tappable",
+    "touch",
+    "mobile"
+  ]
+}
