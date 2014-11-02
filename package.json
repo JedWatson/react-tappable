@@ -1,6 +1,6 @@
 {
   "name": "react-tappable",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Tappable Component for React",
   "main": "lib/Tappable.js",
   "author": "Jed Watson",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "hammerjs": "~2.0.4",
-    "react": "~0.11.2"
+    "react": "~0.12.0"
   },
   "scripts": {
     "test": "echo \"no tests yet\" && exit 0"
