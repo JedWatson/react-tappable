@@ -1,0 +1,33 @@
+{
+  "name": "react-tappable",
+  "main": "dist/react-tappable.min.js",
+  "version": "0.2.0",
+  "homepage": "https://github.com/JedWatson/react-tappable",
+  "authors": [
+    "Jed Watson"
+  ],
+  "description": "Touch / Tappable Event Handling Component for React",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "react-component",
+    "tap",
+    "tappable",
+    "touch",
+    "mobile"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "package.json",
+    "src",
+    "node_modules",
+    "example",
+    "test"
+  ]
+}
