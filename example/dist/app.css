@@ -1,0 +1,85 @@
+/* 
+// Examples Stylesheet
+// -------------------
+*/
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: #08c;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  padding: 1em;
+}
+.footer {
+  margin-top: 50px;
+  border-top: 1px solid #eee;
+  padding: 20px 0;
+  font-size: 12px;
+  color: #999;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #222;
+  font-weight: 100;
+  margin: 0.5em 0;
+}
+.example {
+  overflow: hidden;
+}
+.scrolling {
+  margin: 5px 0;
+}
+.scrolling .link {
+  text-decoration: underline;
+}
+.scrolling .Tappable-active {
+  opacity: 0.8;
+  background: #ffffff;
+}
+.left {
+  float: left;
+  width: 120px;
+  height: 200px;
+  overflow: scroll;
+}
+.tappable-area {
+  width: 80px;
+  height: 460px;
+  padding: 20px;
+  text-align: center;
+  background: #eee;
+  cursor: default;
+}
+.Tappable-active {
+  background: #5cc2f8;
+}
+.right {
+  float: left;
+  width: 180px;
+  padding-left: 20px;
+}
+.event-log {
+  height: 180px;
+  overflow: auto;
+}
+.hint {
+  margin: 15px 0;
+  font-style: italic;
+  color: #999;
+}
