@@ -2,7 +2,7 @@
   "name": "react-tappable",
   "version": "0.2.1",
   "description": "Touch / Tappable Event Handling Component for React",
-  "main": "dist/tappable.js",
+  "main": "src/Tappable.js",
   "author": "Jed Watson",
   "license": "MIT",
   "repository": {
@@ -32,7 +32,6 @@
     "vinyl-source-stream": "~1.0.0",
     "watchify": "~2.1.1"
   },
-  "browser": "src/Tappable.js",
   "browserify": {
     "transform": [
       "reactify"
