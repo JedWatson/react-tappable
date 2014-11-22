@@ -74,7 +74,6 @@ module.exports = React.createClass({
 	},
 	
 	onTouchStart: function(event) {
-		clearTimeout(this._blockTimeout);
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
 		this._blockMouseEvents = true;
