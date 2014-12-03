@@ -27,6 +27,7 @@ module.exports = React.createClass({
 		component: React.PropTypes.any,              // component to create
 		className: React.PropTypes.string,           // optional className
 		classBase: React.PropTypes.string,           // base for generated classNames
+		disabled: React.PropTypes.bool,              // only applies to buttons
 		
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
@@ -242,6 +243,7 @@ module.exports = React.createClass({
 		return React.createElement(this.props.component, {
 			style: style,
 			className: className,
+			disabled: this.props.disabled,
 			onTouchStart: this.onTouchStart,
 			onTouchMove: this.onTouchMove,
 			onTouchEnd: this.onTouchEnd,
