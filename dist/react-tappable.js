@@ -15,6 +15,16 @@ function getTouchProps(touch) {
 	};
 }
 
+function extend(target, source) {
+	if (!source || Object.prototype.toString.call(obj) !== '[object Object]') return target;
+	for (var key in source) {
+		if (source.hasOwnProperty(key)) {
+			target[key] = source[key];
+		}
+	}
+	return target;
+}
+
 /**
  * Tappable Component
  * ==================
@@ -29,6 +39,7 @@ module.exports = React.createClass({
 		component: React.PropTypes.any,              // component to create
 		className: React.PropTypes.string,           // optional className
 		classBase: React.PropTypes.string,           // base for generated classNames
+		style: React.PropTypes.object,               // additional style properties for the component
 		
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
@@ -76,10 +87,9 @@ module.exports = React.createClass({
 	},
 	
 	onTouchStart: function(event) {
-		clearTimeout(this._blockTimeout);
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
-		this._blockMouseEvents = true;
+		window._blockMouseEvents = true;
 		this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 		this.initScrollDetection();
 		this.initPressDetection(this.endTouch);
@@ -183,8 +193,8 @@ module.exports = React.createClass({
 	},
 	
 	onMouseDown: function(event) {
-		if (this._blockMouseEvents) {
-			this._blockMouseEvents = false;
+		if (window._blockMouseEvents) {
+			window._blockMouseEvents = false;
 			return;
 		}
 		if (this.props.onMouseDown && this.props.onMouseDown(event) === false) return;
@@ -197,13 +207,13 @@ module.exports = React.createClass({
 	},
 	
 	onMouseMove: function(event) {
-		if (this._blockMouseEvents || !this._mouseDown) return;
+		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseMove && this.props.onMouseMove(event);
 	},
 	
 	onMouseUp: function(event) {
-		if (this._blockMouseEvents || !this._mouseDown) return;
+		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseUp && this.props.onMouseUp(event);
 		this.props.onTap && this.props.onTap(event);
@@ -211,7 +221,7 @@ module.exports = React.createClass({
 	},
 	
 	onMouseOut: function(event) {
-		if (this._blockMouseEvents || !this._mouseDown) return;
+		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseOut && this.props.onMouseOut(event);
 		this.endMouseEvent();
@@ -242,6 +252,8 @@ module.exports = React.createClass({
 			userSelect: 'none',
 			cursor: 'pointer'
 		};
+		
+		extend(style, this.props.style);
 		
 		return React.createElement(this.props.component, {
 			style: style,
