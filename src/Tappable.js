@@ -14,7 +14,7 @@ function getTouchProps(touch) {
 }
 
 function extend(target, source) {
-	if (!source || Object.prototype.toString.call(obj) !== '[object Object]') return target;
+	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
 	for (var key in source) {
 		if (source.hasOwnProperty(key)) {
 			target[key] = source[key];
