@@ -16,7 +16,7 @@ function getTouchProps(touch) {
 }
 
 function extend(target, source) {
-	if (!source || Object.prototype.toString.call(obj) !== '[object Object]') return target;
+	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
 	for (var key in source) {
 		if (source.hasOwnProperty(key)) {
 			target[key] = source[key];
@@ -40,6 +40,7 @@ module.exports = React.createClass({
 		className: React.PropTypes.string,           // optional className
 		classBase: React.PropTypes.string,           // base for generated classNames
 		style: React.PropTypes.object,               // additional style properties for the component
+		disabled: React.PropTypes.bool,              // only applies to buttons
 		
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
@@ -258,6 +259,7 @@ module.exports = React.createClass({
 		return React.createElement(this.props.component, {
 			style: style,
 			className: className,
+			disabled: this.props.disabled,
 			onTouchStart: this.onTouchStart,
 			onTouchMove: this.onTouchMove,
 			onTouchEnd: this.onTouchEnd,
