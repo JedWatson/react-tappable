@@ -2,7 +2,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var React = require('react'),
 	Tappable = require('react-tappable');
 
-var App = React.createClass({displayName: 'App',
+var App = React.createClass({displayName: "App",
 	getInitialState: function() {
 		return {
 			scrolling: false,
