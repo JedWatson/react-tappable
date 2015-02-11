@@ -26,22 +26,13 @@ function extend(target, source) {
 }
 
 /**
- * Tappable Component
- * ==================
+ * Tappable Mixin
+ * ==============
  */
 
-module.exports = React.createClass({
-	
-	displayName: 'Tappable',
-	
+ var Mixin = {
+
 	propTypes: {
-		
-		component: React.PropTypes.any,              // component to create
-		className: React.PropTypes.string,           // optional className
-		classBase: React.PropTypes.string,           // base for generated classNames
-		style: React.PropTypes.object,               // additional style properties for the component
-		disabled: React.PropTypes.bool,              // only applies to buttons
-		
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
 		pressMoveThreshold: React.PropTypes.number,  // pixels to move before cancelling press
@@ -57,13 +48,10 @@ module.exports = React.createClass({
 		onMouseUp: React.PropTypes.func,             // pass-through mouse event
 		onMouseMove: React.PropTypes.func,           // pass-through mouse event
 		onMouseOut: React.PropTypes.func             // pass-through mouse event
-		
 	},
 	
 	getDefaultProps: function() {
 		return {
-			component: 'span',
-			classBase: 'Tappable',
 			moveThreshold: 100,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
@@ -235,15 +223,9 @@ module.exports = React.createClass({
 			isActive: false
 		});
 	},
-	
-	render: function() {
-		
-		var className = this.props.classBase + (this.state.isActive ? '-active' : '-inactive');
-		if (this.props.className) {
-			className += ' ' + this.props.className;
-		}
-		
-		var style = {
+
+	touchStyles: function() {
+		return  {
 			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
 			WebkitTouchCallout: 'none',
 			WebkitUserSelect: 'none',
@@ -252,8 +234,57 @@ module.exports = React.createClass({
 			msUserSelect: 'none',
 			userSelect: 'none',
 			cursor: 'pointer'
+		}
+	},
+
+	handlers: function() {
+		return {
+			onTouchStart: this.onTouchStart,
+			onTouchMove: this.onTouchMove,
+			onTouchEnd: this.onTouchEnd,
+			onMouseDown: this.onMouseDown,
+			onMouseUp: this.onMouseUp,
+			onMouseMove: this.onMouseMove,
+			onMouseOut: this.onMouseOut,
+		}
+	}
+};
+
+/**
+ * Tappable Component
+ * ==================
+ */
+
+var component = React.createClass({
+
+	displayName: 'Tappable',
+
+	mixins: [Mixin],
+
+	propTypes: {
+		component: React.PropTypes.any,           // component to create
+		className: React.PropTypes.string,        // optional className
+		classBase: React.PropTypes.string,        // base for generated classNames
+		style: React.PropTypes.object,            // additional style properties for the component
+		disabled: React.PropTypes.bool,           // only applies to buttons
+	},
+
+	getDefaultProps: function() {
+		return {
+			component: 'span',
+			classBase: 'Tappable'
 		};
+	},
+
+	render: function() {
 		
+		var className = this.props.classBase + (this.state.isActive ? '-active' : '-inactive');
+		if (this.props.className) {
+			className += ' ' + this.props.className;
+		}
+		
+		var style = {};
+		extend(style, this.touchStyles());
 		extend(style, this.props.style);
 		
 		return React.createElement(this.props.component, {
@@ -270,8 +301,10 @@ module.exports = React.createClass({
 		}, this.props.children);
 		
 	}
-	
 });
+
+component.Mixin = Mixin;
+module.exports = component;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1])(1)
