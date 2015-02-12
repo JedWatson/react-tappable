@@ -225,7 +225,7 @@ function extend(target, source) {
 	},
 
 	touchStyles: function() {
-		return  {
+		return {
 			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
 			WebkitTouchCallout: 'none',
 			WebkitUserSelect: 'none',
@@ -234,7 +234,7 @@ function extend(target, source) {
 			msUserSelect: 'none',
 			userSelect: 'none',
 			cursor: 'pointer'
-		}
+		};
 	},
 
 	handlers: function() {
@@ -245,8 +245,8 @@ function extend(target, source) {
 			onMouseDown: this.onMouseDown,
 			onMouseUp: this.onMouseUp,
 			onMouseMove: this.onMouseMove,
-			onMouseOut: this.onMouseOut,
-		}
+			onMouseOut: this.onMouseOut
+		};
 	}
 };
 
@@ -266,7 +266,7 @@ var component = React.createClass({
 		className: React.PropTypes.string,        // optional className
 		classBase: React.PropTypes.string,        // base for generated classNames
 		style: React.PropTypes.object,            // additional style properties for the component
-		disabled: React.PropTypes.bool,           // only applies to buttons
+		disabled: React.PropTypes.bool            // only applies to buttons
 	},
 
 	getDefaultProps: function() {
