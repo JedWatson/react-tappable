@@ -14,13 +14,21 @@ function getTouchProps(touch) {
 }
 
 function extend(target, source) {
+	
+	var args = Array.prototype.slice.call(arguments, 2);
+	
 	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
 	for (var key in source) {
 		if (source.hasOwnProperty(key)) {
 			target[key] = source[key];
 		}
 	}
-	return target;
+	
+	if(args.length > 0) {
+		return extend.apply([target].concat(args));
+	} else {
+		return target;	
+	}
 }
 
 /**
@@ -282,8 +290,7 @@ var component = React.createClass({
 		}
 		
 		var style = {};
-		extend(style, this.touchStyles());
-		extend(style, this.props.style);
+		extend(style, this.touchStyles(), this.props.style);
 		
 		return React.createElement(this.props.component, {
 			style: style,
