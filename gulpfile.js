@@ -1,5 +1,5 @@
 var browserify = require('browserify'),
-	babelify = require('babelify'),
+	reactify = require('reactify'),
 	shim = require('browserify-shim'),
 	chalk = require('chalk'),
 	del = require('del'),
@@ -130,7 +130,7 @@ function buildExampleScripts(dev) {
 		
 		var common = browserify(opts),
 			bundle = browserify(opts).require('./' + SRC_PATH + '/' + PACKAGE_FILE, { expose: PACKAGE_NAME }),
-			example = browserify(opts).exclude(PACKAGE_NAME).add('./' + EXAMPLE_SRC_PATH + '/' + EXAMPLE_APP).transform(babelify);
+			example = browserify(opts).exclude(PACKAGE_NAME).add('./' + EXAMPLE_SRC_PATH + '/' + EXAMPLE_APP).transform(reactify);
 		
 		DEPENDENCIES.forEach(function(pkg) {
 			common.require(pkg);
