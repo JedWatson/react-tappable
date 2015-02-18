@@ -1,4 +1,5 @@
 var browserify = require('browserify'),
+	babelify = require('babelify'),
 	shim = require('browserify-shim'),
 	chalk = require('chalk'),
 	del = require('del'),
@@ -13,7 +14,6 @@ var browserify = require('browserify'),
 	uglify = require('gulp-uglify'),
 	gutil = require('gulp-util'),
 	merge = require('merge-stream'),
-	reactify = require('reactify'),
 	source = require('vinyl-source-stream'),
 	watchify = require('watchify');
 
@@ -130,7 +130,7 @@ function buildExampleScripts(dev) {
 		
 		var common = browserify(opts),
 			bundle = browserify(opts).require('./' + SRC_PATH + '/' + PACKAGE_FILE, { expose: PACKAGE_NAME }),
-			example = browserify(opts).exclude(PACKAGE_NAME).add('./' + EXAMPLE_SRC_PATH + '/' + EXAMPLE_APP);
+			example = browserify(opts).exclude(PACKAGE_NAME).add('./' + EXAMPLE_SRC_PATH + '/' + EXAMPLE_APP).transform(babelify);
 		
 		DEPENDENCIES.forEach(function(pkg) {
 			common.require(pkg);
@@ -214,7 +214,6 @@ gulp.task('build:dist', ['prepare:dist'], function() {
 	var standalone = browserify('./' + SRC_PATH + '/' + PACKAGE_FILE, {
 			standalone: COMPONENT_NAME
 		})
-		.transform(reactify)
 		.transform(shim);
 	
 	DEPENDENCIES.forEach(function(pkg) {
