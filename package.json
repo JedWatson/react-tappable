@@ -1,6 +1,6 @@
 {
   "name": "react-tappable",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Touch / Tappable Event Handling Component for React",
   "main": "src/Tappable.js",
   "author": "Jed Watson",
