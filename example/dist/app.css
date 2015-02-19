@@ -50,7 +50,7 @@ h6 {
 }
 .scrolling .Tappable-active {
   opacity: 0.8;
-  background: #ffffff;
+  background: white;
 }
 .left {
   float: left;
