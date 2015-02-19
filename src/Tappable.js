@@ -169,7 +169,7 @@ function extend(target, source) {
 		this.endTouch(event);
 	},
 	
-	endTouch: function() {
+	endTouch: function(event) {
 		this.cancelPressDetection();
 		this.props.onTouchEnd && this.props.onTouchEnd(event);
 		this._initialTouch = null;
