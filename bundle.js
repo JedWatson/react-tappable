@@ -1,4 +1,51 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"react-tappable":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * Copyright 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule Object.assign
+ */
+
+// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+
+function assign(target, sources) {
+  if (target == null) {
+    throw new TypeError('Object.assign target cannot be null or undefined');
+  }
+
+  var to = Object(target);
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
+    var nextSource = arguments[nextIndex];
+    if (nextSource == null) {
+      continue;
+    }
+
+    var from = Object(nextSource);
+
+    // We don't currently support accessors nor proxies. Therefore this
+    // copy cannot throw. If we ever supported this then we must handle
+    // exceptions and side-effects. We don't support symbols so they won't
+    // be transferred.
+
+    for (var key in from) {
+      if (hasOwnProperty.call(from, key)) {
+        to[key] = from[key];
+      }
+    }
+  }
+
+  return to;
+};
+
+module.exports = assign;
+
+},{}],"react-tappable":[function(require,module,exports){
 var React = require('react');
 
 // Enable React Touch Events
@@ -14,15 +61,7 @@ function getTouchProps(touch) {
 	};
 }
 
-function extend(target, source) {
-	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
-	for (var key in source) {
-		if (source.hasOwnProperty(key)) {
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
+var extend = require('react/lib/Object.assign');
 
 /**
  * Tappable Mixin
@@ -170,7 +209,7 @@ function extend(target, source) {
 		this.endTouch(event);
 	},
 	
-	endTouch: function() {
+	endTouch: function(event) {
 		this.cancelPressDetection();
 		this.props.onTouchEnd && this.props.onTouchEnd(event);
 		this._initialTouch = null;
@@ -283,8 +322,7 @@ var component = React.createClass({
 		}
 		
 		var style = {};
-		extend(style, this.touchStyles());
-		extend(style, this.props.style);
+		extend(style, this.touchStyles(), this.props.style);
 		
 		return React.createElement(this.props.component, {
 			style: style,
@@ -305,4 +343,4 @@ var component = React.createClass({
 component.Mixin = Mixin;
 module.exports = component;
 
-},{"react":undefined}]},{},[]);
+},{"react":undefined,"react/lib/Object.assign":1}]},{},[]);
