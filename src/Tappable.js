@@ -13,23 +13,7 @@ function getTouchProps(touch) {
 	};
 }
 
-function extend(target, source) {
-	
-	var args = Array.prototype.slice.call(arguments, 2);
-	
-	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
-	for (var key in source) {
-		if (source.hasOwnProperty(key)) {
-			target[key] = source[key];
-		}
-	}
-	
-	if(args.length > 0) {
-		return extend.apply([target].concat(args));
-	} else {
-		return target;	
-	}
-}
+var extend = require('react/lib/Object.assign');
 
 /**
  * Tappable Mixin
