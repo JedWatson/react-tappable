@@ -13,15 +13,7 @@ function getTouchProps(touch) {
 	};
 }
 
-function extend(target, source) {
-	if (!source || Object.prototype.toString.call(source) !== '[object Object]') return target;
-	for (var key in source) {
-		if (source.hasOwnProperty(key)) {
-			target[key] = source[key];
-		}
-	}
-	return target;
-}
+var extend = require('react/lib/Object.assign');
 
 /**
  * Tappable Mixin
@@ -282,8 +274,7 @@ var component = React.createClass({
 		}
 		
 		var style = {};
-		extend(style, this.touchStyles());
-		extend(style, this.props.style);
+		extend(style, this.touchStyles(), this.props.style);
 		
 		return React.createElement(this.props.component, {
 			style: style,
