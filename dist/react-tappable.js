@@ -15,6 +15,10 @@ function getTouchProps(touch) {
 	};
 }
 
+function isDataOrAriaProp(key) {
+	return key.indexOf("data-") === 0 || key.indexOf("aria-") === 0;
+}
+
 var extend = require('react/lib/Object.assign');
 
 /**
@@ -30,7 +34,7 @@ var extend = require('react/lib/Object.assign');
 		pressMoveThreshold: React.PropTypes.number,  // pixels to move before cancelling press
 		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
 		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
-		
+
 		onTap: React.PropTypes.func,                 // fires when a tap is detected
 		onPress: React.PropTypes.func,               // fires when a press is detected
 		onTouchStart: React.PropTypes.func,          // pass-through touch event
@@ -41,7 +45,7 @@ var extend = require('react/lib/Object.assign');
 		onMouseMove: React.PropTypes.func,           // pass-through mouse event
 		onMouseOut: React.PropTypes.func             // pass-through mouse event
 	},
-	
+
 	getDefaultProps: function() {
 		return {
 			moveThreshold: 100,
@@ -49,24 +53,24 @@ var extend = require('react/lib/Object.assign');
 			pressMoveThreshold: 5
 		};
 	},
-	
+
 	getInitialState: function() {
 		return {
 			isActive: false,
 			touchActive: false
 		};
 	},
-	
+
 	componentWillUnmount: function() {
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
 	},
-	
+
 	processEvent: function(event) {
 		if (this.props.preventDefault) event.preventDefault();
 		if (this.props.stopPropagation) event.stopPropagation();
 	},
-	
+
 	onTouchStart: function(event) {
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
@@ -78,7 +82,7 @@ var extend = require('react/lib/Object.assign');
 			isActive: true
 		});
 	},
-	
+
 	initScrollDetection: function() {
 		this._scrollParents = [];
 		this._scrollPos = { top: 0, left: 0 };
@@ -92,14 +96,14 @@ var extend = require('react/lib/Object.assign');
 			node = node.parentNode;
 		}
 	},
-	
+
 	calculateMovement: function(touch) {
 		return {
 			x: Math.abs(touch.clientX - this._initialTouch.clientX),
 			y: Math.abs(touch.clientY - this._initialTouch.clientY)
 		};
 	},
-	
+
 	detectScroll: function() {
 		var currentScrollPos = { top: 0, left: 0 };
 		for (var i = 0; i < this._scrollParents.length; i++) {
@@ -108,12 +112,12 @@ var extend = require('react/lib/Object.assign');
 		}
 		return !(currentScrollPos.top === this._scrollPos.top && currentScrollPos.left === this._scrollPos.left);
 	},
-	
+
 	cleanupScrollDetection: function() {
 		this._scrollParents = undefined;
 		this._scrollPos = undefined;
 	},
-	
+
 	initPressDetection: function(callback) {
 		if (!this.props.onPress) return;
 		this._pressTimeout = setTimeout(function() {
@@ -121,11 +125,11 @@ var extend = require('react/lib/Object.assign');
 			callback();
 		}.bind(this), this.props.pressDelay);
 	},
-	
+
 	cancelPressDetection: function() {
 		clearTimeout(this._pressTimeout);
 	},
-	
+
 	onTouchMove: function(event) {
 		if (!this._initialTouch) return;
 		this.processEvent(event);
@@ -152,7 +156,7 @@ var extend = require('react/lib/Object.assign');
 			}
 		}
 	},
-	
+
 	onTouchEnd: function(event) {
 		if (!this._initialTouch) return;
 		this.processEvent(event);
@@ -162,7 +166,7 @@ var extend = require('react/lib/Object.assign');
 		}
 		this.endTouch(event);
 	},
-	
+
 	endTouch: function(event) {
 		this.cancelPressDetection();
 		this.props.onTouchEnd && this.props.onTouchEnd(event);
@@ -172,7 +176,7 @@ var extend = require('react/lib/Object.assign');
 			isActive: false
 		});
 	},
-	
+
 	onMouseDown: function(event) {
 		if (window._blockMouseEvents) {
 			window._blockMouseEvents = false;
@@ -186,13 +190,13 @@ var extend = require('react/lib/Object.assign');
 			isActive: true
 		});
 	},
-	
+
 	onMouseMove: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseMove && this.props.onMouseMove(event);
 	},
-	
+
 	onMouseUp: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
@@ -200,14 +204,14 @@ var extend = require('react/lib/Object.assign');
 		this.props.onTap && this.props.onTap(event);
 		this.endMouseEvent();
 	},
-	
+
 	onMouseOut: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseOut && this.props.onMouseOut(event);
 		this.endMouseEvent();
 	},
-	
+
 	endMouseEvent: function() {
 		this.cancelPressDetection();
 		this._mouseDown = false;
@@ -269,16 +273,16 @@ var component = React.createClass({
 	},
 
 	render: function() {
-		
+
 		var className = this.props.classBase + (this.state.isActive ? '-active' : '-inactive');
 		if (this.props.className) {
 			className += ' ' + this.props.className;
 		}
-		
+
 		var style = {};
 		extend(style, this.touchStyles(), this.props.style);
-		
-		return React.createElement(this.props.component, {
+
+		var newComponentProps = {
 			style: style,
 			className: className,
 			disabled: this.props.disabled,
@@ -289,8 +293,16 @@ var component = React.createClass({
 			onMouseMove: this.onMouseMove,
 			onMouseUp: this.onMouseUp,
 			onMouseOut: this.onMouseOut
-		}, this.props.children);
-		
+		};
+
+		var props = this.props;
+		dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
+		dataOrAriaPropNames.forEach(function (propName) {
+			newComponentProps[propName] = props[propName];
+		});
+
+		return React.createElement(this.props.component, newComponentProps, this.props.children);
+
 	}
 });
 
