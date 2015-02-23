@@ -406,7 +406,6 @@ var component = React.createClass({
 		});
 
 		return React.createElement(this.props.component, newComponentProps, this.props.children);
-
 	}
 });
 
