@@ -1,6 +1,6 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
- * Copyright 2014, Facebook, Inc.
+ * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -11,6 +11,8 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
  */
 
 // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
+
+'use strict';
 
 function assign(target, sources) {
   if (target == null) {
@@ -41,7 +43,7 @@ function assign(target, sources) {
   }
 
   return to;
-};
+}
 
 module.exports = assign;
 
