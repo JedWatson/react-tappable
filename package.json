@@ -10,7 +10,7 @@
     "url": "https://github.com/JedWatson/react-tappable.git"
   },
   "dependencies": {
-    "react": "^0.12.2"
+    "react": ">=0.12.0"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
