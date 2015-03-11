@@ -1,5 +1,11 @@
 # React-Tappable Changelog
 
+## v0.4.0 / 2015-03-12
+
+### Updated
+
+- Now works with React 0.13, backwards compatible with 0.12
+
 ## v0.3.3 / 2015-02-19
 
 ### Added
