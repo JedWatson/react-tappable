@@ -90,20 +90,20 @@ var extend = require('react/lib/Object.assign');
 		this.processEvent(event);
 		window._blockMouseEvents = true;
 
-		if(event.touches.length === 1){
+		if (event.touches.length === 1) {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(this.endTouch);
 			this.setState({
 				isActive: true
 			});
-		} else if( (this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2){
+		} else if ((this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2) {
 			this.onPinchStart(event);
 		}
 	},
 
-	onPinchStart: function(event){
-		if(this._initialTouch) this.endTouch();
+	onPinchStart: function(event) {
+		if (this._initialTouch) this.endTouch();
 		// in case the two touches didn't start exactly at the same time
 
 		var touches = event.touches;
@@ -125,8 +125,8 @@ var extend = require('react/lib/Object.assign');
 		this.props.onPinchStart && this.props.onPinchStart(this._initialPinch, event);
 	},
 
-	onPinchMove: function(event){
-		if(this._initialTouch) this.endTouch();
+	onPinchMove: function(event) {
+		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
 		var currentPinch = getPinchProps(touches); //TODO add helper function to order touches by identifier
@@ -162,7 +162,7 @@ var extend = require('react/lib/Object.assign');
 		var currentPinch = extend({}, this._lastPinch);
 		currentPinch.time = Date.now();
 
-		if(currentPinch.time - this._lastPinch.time > 16){
+		if (currentPinch.time - this._lastPinch.time > 16){
 			currentPinch.displacementVelocity = 0;
 			currentPinch.rotationVelocity = 0;
 			currentPinch.zoomVelocity = 0;
@@ -172,7 +172,7 @@ var extend = require('react/lib/Object.assign');
 
 		this._initialPinch = this._lastPinch = null;
 
-		if(event.touches.length === 1){
+		if (event.touches.length === 1){
 			this.onTouchStart(event);
 			// If one finger is still on screen, it should start a new touch event for swiping etc
 		}
