@@ -106,11 +106,3 @@ The following native event handlers can also be specified.
 * `onMouseOut`
 
 Returning `false` from `onTouchStart` or `onMouseDown` handlers will prevent `Tappable` from handling the event.
-
-### Changelog
-
-#### v0.4.0-beta.1
-
-* Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
-* Older single touch based events don't fire when dealing with multi-touch
-* Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable

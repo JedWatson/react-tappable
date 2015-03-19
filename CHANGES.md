@@ -1,5 +1,11 @@
 # React-Tappable Changelog
 
+## v0.5.0-beta.1
+
+* Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
+* Older single touch based events don't fire when dealing with multi-touch
+* Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable
+
 ## v0.4.0 / 2015-03-12
 
 ### Updated
