@@ -67,6 +67,31 @@ These are the special events implemented by `Tappable`.
 
 * `onTap` fired when touchStart or mouseDown is followed by touchEnd or mouseUp within the moveThreshold
 * `onPress` fired when a touch is held for the specified ms
+* `onPinchStart` fired when two fingers land on the screen
+* `onPinchMove` fired on any movement while two fingers are on screen
+* `onPinchEnd` fired when less than two fingers are left on the screen, onTouchStart is triggerred, if one touch remains
+
+#### Pinch Events
+
+Pinch events come with a special object with additional data to actually be more useful than the native events:
+
+* touches: Object - {identifier, pageX, pageY} - raw data from the event
+* center: Object - {x,y} - Calculated center between the two touch points
+* angle: Degrees - angle of the line connecting the two touch points to the X-axis
+* distance: Number of pixels - beween the two touch points
+* displacement: Object {x, y} - offset of the center since the pinch began
+* displacementVelocity: Object {x, y} : Pixels/ms - Immediate velocity of the displacement
+* rotation: degrees - delta rotation since the beginning of the gesture
+* rotationVelocity: degrees/millisecond - immediate rotational velocity
+* zoom: Number - Zoom factor - ratio between distance between the two touch points now over initial
+* zoomVelocity: zoomFactor/millisecond - immediate velocity of zooming
+* time: milliseconds since epoch - Timestamp
+
+#### Known Issues
+
+* The touches array isn't ordered according to the initial pinch event's identifiers. Rare cases, where the touch order changes, can result in surprising behaviour
+* The pinch implementation has not been thoroughly tested
+* Any touch event with 3 three or more touches is completely ignored.
 
 ### Native Events
 
@@ -81,3 +106,11 @@ The following native event handlers can also be specified.
 * `onMouseOut`
 
 Returning `false` from `onTouchStart` or `onMouseDown` handlers will prevent `Tappable` from handling the event.
+
+### Changelog
+
+#### v0.4.0-beta.1
+
+* Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
+* Older single touch based events don't fire when dealing with multi-touch
+* Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable
