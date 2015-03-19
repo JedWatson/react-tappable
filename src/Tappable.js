@@ -161,7 +161,7 @@ var extend = require('react/lib/Object.assign');
 		//TODO use helper to order touches by identifier and use actual values on touchEnd.
 
 		var currentPinch = Object.assign({}, this._lastPinch);
-		var currentPinch.time = Date.now();
+		currentPinch.time = Date.now();
 
 		if(currentPinch.time - this._lastPinch.time > 16){
 			currentPinch.displacementVelocity = 0;
