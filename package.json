@@ -32,7 +32,6 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^2.4.0"
   },
-  "browserify": {},
   "browserify-shim": {
     "react": "global:React"
   },
