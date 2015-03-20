@@ -114,42 +114,42 @@ gulp.task('build:example:css', ['prepare:examples'], buildExampleCSS);
 
 /**
  * Build example scripts
- * 
+ *
  * Returns a gulp task with watchify when in development mode
  */
 
 function buildExampleScripts(dev) {
-	
+
 	var dest = EXAMPLE_DIST_PATH;
-	
+
 	var opts = dev ? watchify.args : {};
 	opts.debug = dev ? true : false;
 	opts.hasExports = true;
-	
+
 	return function() {
-		
+
 		var common = browserify(opts),
 			bundle = browserify(opts).require('./' + SRC_PATH + '/' + PACKAGE_FILE, { expose: PACKAGE_NAME }),
 			example = browserify(opts).exclude(PACKAGE_NAME).add('./' + EXAMPLE_SRC_PATH + '/' + EXAMPLE_APP).transform(reactify);
-		
+
 		DEPENDENCIES.forEach(function(pkg) {
 			common.require(pkg);
 			bundle.exclude(pkg);
 			example.exclude(pkg);
 		});
-		
+
 		if (dev) {
 			watchBundle(common, 'common.js', dest);
 			watchBundle(bundle, 'bundle.js', dest);
 			watchBundle(example, 'app.js', dest);
 		}
-		
+
 		return merge(
 			doBundle(common, 'common.js', dest),
 			doBundle(bundle, 'bundle.js', dest),
 			doBundle(example, 'app.js', dest)
 		);
-		
+
 	};
 
 }
@@ -210,16 +210,16 @@ gulp.task('prepare:dist', function(done) {
 });
 
 gulp.task('build:dist', ['prepare:dist'], function() {
-	
+
 	var standalone = browserify('./' + SRC_PATH + '/' + PACKAGE_FILE, {
 			standalone: COMPONENT_NAME
 		})
 		.transform(shim);
-	
+
 	DEPENDENCIES.forEach(function(pkg) {
 		standalone.exclude(pkg);
 	});
-	
+
 	return standalone.bundle()
 		.on('error', function(e) {
 			gutil.log('Browserify Error', e);
@@ -229,7 +229,7 @@ gulp.task('build:dist', ['prepare:dist'], function() {
 		.pipe(rename(PACKAGE_NAME + '.min.js'))
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest(DIST_PATH));
-	
+
 });
 
 gulp.task('build', [
