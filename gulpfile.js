@@ -6,8 +6,8 @@ var browserify = require('browserify'),
 	gulp = require('gulp'),
 	bump = require('gulp-bump'),
 	connect = require('gulp-connect'),
-	deploy = require("gulp-gh-pages"),
-	git = require("gulp-git"),
+	deploy = require('gulp-gh-pages'),
+	git = require('gulp-git'),
 	less = require('gulp-less'),
 	rename = require('gulp-rename'),
 	streamify = require('gulp-streamify'),
@@ -59,8 +59,8 @@ function watchBundle(target, name, dest) {
 	return watchify(target)
 		.on('update', function (scriptIds) {
 			scriptIds = scriptIds
-				.filter(function(i) { return i.substr(0,2) !== './' })
-				.map(function(i) { return chalk.blue(i.replace(__dirname, '')) });
+				.filter(function(i) { return i.substr(0, 2) !== './'; })
+				.map(function(i) { return chalk.blue(i.replace(__dirname, '')); });
 			if (scriptIds.length > 1) {
 				gutil.log(scriptIds.length + ' Scripts updated:\n* ' + scriptIds.join('\n* ') + '\nrebuilding...');
 			} else {
@@ -88,7 +88,7 @@ gulp.task('prepare:examples', function(done) {
  */
 
 function buildExampleFiles() {
-	return gulp.src(EXAMPLE_FILES.map(function(i) { return EXAMPLE_SRC_PATH + '/' + i }))
+	return gulp.src(EXAMPLE_FILES.map(function(i) { return EXAMPLE_SRC_PATH + '/' + i; }))
 		.pipe(gulp.dest(EXAMPLE_DIST_PATH))
 		.pipe(connect.reload());
 }
@@ -150,9 +150,9 @@ function buildExampleScripts(dev) {
 			doBundle(example, 'app.js', dest)
 		);
 		
-	}
+	};
 
-};
+}
 
 gulp.task('dev:build:example:scripts', buildExampleScripts(true));
 gulp.task('build:example:scripts', ['prepare:examples'], buildExampleScripts());
@@ -173,7 +173,7 @@ gulp.task('watch:examples', [
 	'dev:build:example:css',
 	'dev:build:example:scripts'
 ], function() {
-	gulp.watch(EXAMPLE_FILES.map(function(i) { return EXAMPLE_SRC_PATH + '/' + i }), ['dev:build:example:files']);
+	gulp.watch(EXAMPLE_FILES.map(function(i) { return EXAMPLE_SRC_PATH + '/' + i; }), ['dev:build:example:files']);
 	gulp.watch([EXAMPLE_SRC_PATH + '/' + EXAMPLE_LESS], ['dev:build:example:css']);
 });
 
