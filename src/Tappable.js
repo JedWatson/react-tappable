@@ -399,7 +399,7 @@ var component = React.createClass({
 		};
 
 		var props = this.props;
-		dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
+		var dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
 		dataOrAriaPropNames.forEach(function (propName) {
 			newComponentProps[propName] = props[propName];
 		});
