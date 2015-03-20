@@ -14,16 +14,16 @@ function getTouchProps(touch) {
 }
 
 function isDataOrAriaProp(key) {
-	return key.indexOf("data-") === 0 || key.indexOf("aria-") === 0;
+	return key.indexOf('data-') === 0 || key.indexOf('aria-') === 0;
 }
 
 function getPinchProps(touches) {
 	return {
-		touches : Array.prototype.map.call(touches, function copyTouch(touch) {
+		touches: Array.prototype.map.call(touches, function copyTouch(touch) {
 			return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
 		}),
-		center: {x: (touches[0].pageX + touches[1].pageX)/2, y: (touches[0].pageY + touches[1].pageY)/2 },
-		angle: Math.atan() * (touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX) * 180/Math.PI,
+		center: { x: (touches[0].pageX + touches[1].pageX) / 2, y: (touches[0].pageY + touches[1].pageY) / 2 },
+		angle: Math.atan() * (touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX) * 180 / Math.PI,
 		distance: Math.sqrt(Math.pow(Math.abs(touches[1].pageX - touches[0].pageX), 2) + Math.pow(Math.abs(touches[1].pageY - touches[0].pageY), 2))
 	};
 }
@@ -110,8 +110,8 @@ var Mixin = {
 		this._initialPinch = getPinchProps(touches);
 
 		this._initialPinch = extend(this._initialPinch, {
-			displacement: {x: 0, y:0},
-			displacementVelocity: {x: 0, y: 0},
+			displacement: { x: 0, y: 0 },
+			displacementVelocity: { x: 0, y: 0 },
 			rotation: 0,
 			rotationVelocity: 0,
 			zoom: 1,
@@ -146,7 +146,7 @@ var Mixin = {
 		currentPinch.rotation = currentPinch.angle - this._initialPinch.angle;
 		currentPinch.rotationVelocity = currentPinch.rotation - this._lastPinch.rotation / timeSinceLastPinch;
 
-		currentPinch.zoom = currentPinch.distance/this._initialPinch.distance;
+		currentPinch.zoom = currentPinch.distance / this._initialPinch.distance;
 		currentPinch.zoomVelocity = (currentPinch.zoom - this._lastPinch.zoom) / timeSinceLastPinch;
 
 		this.props.onPinchMove && this.props.onPinchMove(currentPinch, event);
