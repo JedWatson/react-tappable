@@ -1,6 +1,6 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var React = require('react'),
-	Tappable = require('react-tappable');
+var React = require('react');
+var Tappable = require('react-tappable');
 
 var App = React.createClass({displayName: "App",
 	getInitialState: function() {
@@ -13,7 +13,7 @@ var App = React.createClass({displayName: "App",
 		var log = this.refs.eventLog.getDOMNode();
 		log.scrollTop = log.scrollHeight;
 	},
-	handleEvent: function(name, event) {
+	handleEvent: function(name/*, event*/) {
 		var events = this.state.events;
 		events.push(name);
 		this.setState({
@@ -37,7 +37,7 @@ var App = React.createClass({displayName: "App",
 			//onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
 			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
-		}
+		};
 		var toggleClass = this.state.scrolling ? 'scrolling-enabled' : 'scrolling-disabled';
 		return (
 			React.createElement("div", {className: "example"}, 
@@ -61,7 +61,7 @@ var App = React.createClass({displayName: "App",
 					)
 				)
 			)
-		)
+		);
 	}
 });
 

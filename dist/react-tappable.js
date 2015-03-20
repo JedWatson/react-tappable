@@ -16,16 +16,16 @@ function getTouchProps(touch) {
 }
 
 function isDataOrAriaProp(key) {
-	return key.indexOf("data-") === 0 || key.indexOf("aria-") === 0;
+	return key.indexOf('data-') === 0 || key.indexOf('aria-') === 0;
 }
 
-function getPinchProps(touches){
+function getPinchProps(touches) {
 	return {
-		touches : Array.prototype.map.call(touches, function copyTouch(touch) {
-		  return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
+		touches: Array.prototype.map.call(touches, function copyTouch(touch) {
+			return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
 		}),
-		center: {x: (touches[0].pageX + touches[1].pageX)/2, y: (touches[0].pageY + touches[1].pageY)/2 },
-		angle: Math.atan() * (touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX) * 180/Math.PI,
+		center: { x: (touches[0].pageX + touches[1].pageX) / 2, y: (touches[0].pageY + touches[1].pageY) / 2 },
+		angle: Math.atan() * (touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX) * 180 / Math.PI,
 		distance: Math.sqrt(Math.pow(Math.abs(touches[1].pageX - touches[0].pageX), 2) + Math.pow(Math.abs(touches[1].pageY - touches[0].pageY), 2))
 	};
 }
@@ -37,8 +37,7 @@ var extend = require('react/lib/Object.assign');
  * ==============
  */
 
- var Mixin = {
-
+var Mixin = {
 	propTypes: {
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
@@ -105,16 +104,16 @@ var extend = require('react/lib/Object.assign');
 	},
 
 	onPinchStart: function(event) {
-		if (this._initialTouch) this.endTouch();
 		// in case the two touches didn't start exactly at the same time
+		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
 
 		this._initialPinch = getPinchProps(touches);
 
 		this._initialPinch = extend(this._initialPinch, {
-			displacement: {x: 0, y:0},
-			displacementVelocity: {x: 0, y: 0},
+			displacement: { x: 0, y: 0 },
+			displacementVelocity: { x: 0, y: 0 },
 			rotation: 0,
 			rotationVelocity: 0,
 			zoom: 1,
@@ -149,7 +148,7 @@ var extend = require('react/lib/Object.assign');
 		currentPinch.rotation = currentPinch.angle - this._initialPinch.angle;
 		currentPinch.rotationVelocity = currentPinch.rotation - this._lastPinch.rotation / timeSinceLastPinch;
 
-		currentPinch.zoom = currentPinch.distance/this._initialPinch.distance;
+		currentPinch.zoom = currentPinch.distance / this._initialPinch.distance;
 		currentPinch.zoomVelocity = (currentPinch.zoom - this._lastPinch.zoom) / timeSinceLastPinch;
 
 		this.props.onPinchMove && this.props.onPinchMove(currentPinch, event);
@@ -157,14 +156,12 @@ var extend = require('react/lib/Object.assign');
 		this._lastPinch = currentPinch;
 	},
 
-	onPinchEnd: function(event){
-
+	onPinchEnd: function(event) {
 		// TODO use helper to order touches by identifier and use actual values on touchEnd.
-
 		var currentPinch = extend({}, this._lastPinch);
 		currentPinch.time = Date.now();
 
-		if (currentPinch.time - this._lastPinch.time > 16){
+		if (currentPinch.time - this._lastPinch.time > 16) {
 			currentPinch.displacementVelocity = 0;
 			currentPinch.rotationVelocity = 0;
 			currentPinch.zoomVelocity = 0;
@@ -174,9 +171,9 @@ var extend = require('react/lib/Object.assign');
 
 		this._initialPinch = this._lastPinch = null;
 
-		if (event.touches.length === 1){
+		// If one finger is still on screen, it should start a new touch event for swiping etc
+		if (event.touches.length === 1) {
 			this.onTouchStart(event);
-			// If one finger is still on screen, it should start a new touch event for swiping etc
 		}
 	},
 
@@ -228,11 +225,11 @@ var extend = require('react/lib/Object.assign');
 	},
 
 	onTouchMove: function(event) {
-		if (this._initialTouch){
+		if (this._initialTouch) {
 			this.processEvent(event);
-			if (this.detectScroll()) {
-				return this.endTouch(event);
-			}
+
+			if (this.detectScroll()) return this.endTouch(event);
+
 			this.props.onTouchMove && this.props.onTouchMove(event);
 			this._lastTouch = getTouchProps(event.touches[0]);
 			var movement = this.calculateMovement(this._lastTouch);
@@ -252,7 +249,7 @@ var extend = require('react/lib/Object.assign');
 					});
 				}
 			}
-		} else if(this._initialPinch && event.touches.length === 2){
+		} else if (this._initialPinch && event.touches.length === 2) {
 			this.onPinchMove(event);
 			event.preventDefault();
 		}
@@ -266,7 +263,7 @@ var extend = require('react/lib/Object.assign');
 				this.props.onTap(event);
 			}
 			this.endTouch(event);
-		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2){
+		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
 			this.onPinchEnd(event);
 			event.preventDefault();
 		}
@@ -378,19 +375,20 @@ var component = React.createClass({
 	},
 
 	render: function() {
+		var props = this.props;
+		var className = props.classBase + (this.state.isActive ? '-active' : '-inactive');
 
-		var className = this.props.classBase + (this.state.isActive ? '-active' : '-inactive');
-		if (this.props.className) {
-			className += ' ' + this.props.className;
+		if (props.className) {
+			className += ' ' + props.className;
 		}
 
 		var style = {};
-		extend(style, this.touchStyles(), this.props.style);
+		extend(style, this.touchStyles(), props.style);
 
 		var newComponentProps = {
 			style: style,
 			className: className,
-			disabled: this.props.disabled,
+			disabled: props.disabled,
 			onTouchStart: this.onTouchStart,
 			onTouchMove: this.onTouchMove,
 			onTouchEnd: this.onTouchEnd,
@@ -400,13 +398,12 @@ var component = React.createClass({
 			onMouseOut: this.onMouseOut
 		};
 
-		var props = this.props;
-		dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
+		var dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
 		dataOrAriaPropNames.forEach(function (propName) {
 			newComponentProps[propName] = props[propName];
 		});
 
-		return React.createElement(this.props.component, newComponentProps, this.props.children);
+		return React.createElement(props.component, newComponentProps, props.children);
 	}
 });
 
