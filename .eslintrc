@@ -18,12 +18,5 @@
 		"react/react-in-jsx-scope": 1,
 		"semi": 2,
 		"strict": 0
-	},
-	"globals": {
-		"jQuery": true,
-		"$": true,
-		"_": true,
-		"it": true,
-		"Keystone": true
 	}
 }
