@@ -1,5 +1,5 @@
-var React = require('react'),
-	Tappable = require('react-tappable');
+var React = require('react');
+var Tappable = require('react-tappable');
 
 var App = React.createClass({
 	getInitialState: function() {
@@ -12,7 +12,7 @@ var App = React.createClass({
 		var log = this.refs.eventLog.getDOMNode();
 		log.scrollTop = log.scrollHeight;
 	},
-	handleEvent: function(name, event) {
+	handleEvent: function(name/*, event*/) {
 		var events = this.state.events;
 		events.push(name);
 		this.setState({
@@ -36,7 +36,7 @@ var App = React.createClass({
 			//onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
 			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
-		}
+		};
 		var toggleClass = this.state.scrolling ? 'scrolling-enabled' : 'scrolling-disabled';
 		return (
 			<div className="example">
@@ -60,7 +60,7 @@ var App = React.createClass({
 					</div>
 				</div>
 			</div>
-		)
+		);
 	}
 });
 
