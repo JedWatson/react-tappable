@@ -43,8 +43,10 @@ var Mixin = {
 		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
 		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
 
-		onTap: React.PropTypes.func,                 // fires when a tap is detected
 		onPress: React.PropTypes.func,               // fires when a press is detected
+		onRelease: React.PropTypes.func,             // fires when a touchEnd/mouseUp occurs
+		onTap: React.PropTypes.func,                 // fires when a tap is detected
+
 		onTouchStart: React.PropTypes.func,          // pass-through touch event
 		onTouchMove: React.PropTypes.func,           // pass-through touch event
 		onTouchEnd: React.PropTypes.func,            // pass-through touch event
@@ -257,9 +259,11 @@ var Mixin = {
 		if (this._initialTouch) {
 			this.processEvent(event);
 			var movement = this.calculateMovement(this._lastTouch);
+
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				this.props.onTap(event);
 			}
+
 			this.endTouch(event);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
 			this.onPinchEnd(event);
@@ -269,7 +273,10 @@ var Mixin = {
 
 	endTouch: function(event) {
 		this.cancelPressDetection();
+
 		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
+		if (event && this.props.onRelease) this.props.onRelease(event);
+
 		this._initialTouch = null;
 		this._lastTouch = null;
 		this.setState({
@@ -301,6 +308,7 @@ var Mixin = {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseUp && this.props.onMouseUp(event);
+		this.props.onRelease && this.props.onRelease(event);
 		this.props.onTap && this.props.onTap(event);
 		this.endMouseEvent();
 	},
