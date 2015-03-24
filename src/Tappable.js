@@ -43,6 +43,7 @@ var Mixin = {
 		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
 		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
 
+		onDrag: React.PropTypes.func,                // fires when a mouseMove/touchMove occurs
 		onPress: React.PropTypes.func,               // fires when a press is detected
 		onRelease: React.PropTypes.func,             // fires when a touchEnd/mouseUp occurs
 		onTap: React.PropTypes.func,                 // fires when a tap is detected
@@ -231,6 +232,7 @@ var Mixin = {
 			if (this.detectScroll()) return this.endTouch(event);
 
 			if (this.props.onTouchMove) this.props.onTouchMove(event);
+			if (this.props.onDrag) this.props.onDrag(event);
 			this._lastTouch = getTouchProps(event.touches[0]);
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
@@ -302,6 +304,7 @@ var Mixin = {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		if (this.props.onMouseMove) this.props.onMouseMove(event);
+		if (this.props.onDrag) this.props.onDrag(event);
 	},
 
 	onMouseUp: function(event) {
