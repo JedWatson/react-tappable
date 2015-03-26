@@ -89,7 +89,6 @@ Pinch events come with a special object with additional data to actually be more
 
 #### Known Issues
 
-* The touches array isn't ordered according to the initial pinch event's identifiers. Rare cases, where the touch order changes, can result in surprising behaviour
 * The pinch implementation has not been thoroughly tested
 * Any touch event with 3 three or more touches is completely ignored.
 
