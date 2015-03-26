@@ -128,7 +128,18 @@ var Mixin = {
 		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
-		var currentPinch = getPinchProps(touches); //TODO add helper function to order touches by identifier
+
+		if(touches.length !== 2){
+			return this.onPinchEnd(event) // bail out before disaster
+		}
+
+		var currentPinch =
+			touches[0].identifier === this._initialPinch.touches[0].identifier && touches[1].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches) // the touches are in the correct order
+			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches.reverse()) // the touches have somehow changed order
+			:
+				getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
@@ -170,9 +181,11 @@ var Mixin = {
 		this._initialPinch = this._lastPinch = null;
 
 		// If one finger is still on screen, it should start a new touch event for swiping etc
-		if (event.touches.length === 1) {
-			this.onTouchStart(event);
-		}
+		// But it should never fire an onTap or onPress event.
+		// Since there is no support swipes yet, this should be disregarded for now
+		// if (event.touches.length === 1) {
+		// 	this.onTouchStart(event);
+		// }
 	},
 
 	initScrollDetection: function() {
