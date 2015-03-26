@@ -383,23 +383,24 @@ var component = React.createClass({
 		var style = {};
 		extend(style, this.touchStyles(), props.style);
 
-		var newComponentProps = {
+		var newComponentProps = extend({}, props, {
 			style: style,
 			className: className,
 			disabled: props.disabled,
-			onTouchStart: this.onTouchStart,
-			onTouchMove: this.onTouchMove,
-			onTouchEnd: this.onTouchEnd,
-			onMouseDown: this.onMouseDown,
-			onMouseMove: this.onMouseMove,
-			onMouseUp: this.onMouseUp,
-			onMouseOut: this.onMouseOut
-		};
+			handlers: this.handlers
+		}, this.handlers());
 
-		var dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
-		dataOrAriaPropNames.forEach(function (propName) {
-			newComponentProps[propName] = props[propName];
-		});
+		delete newComponentProps.onTap;
+		delete newComponentProps.onPress;
+		delete newComponentProps.onPinchStart;
+		delete newComponentProps.onPinchMove;
+		delete newComponentProps.onPinchEnd;
+		delete newComponentProps.moveThreshold;
+		delete newComponentProps.pressDelay;
+		delete newComponentProps.pressMoveThreshold;
+		delete newComponentProps.preventDefault;
+		delete newComponentProps.stopPropagation;
+		delete newComponentProps.component;
 
 		return React.createElement(props.component, newComponentProps, props.children);
 	}
