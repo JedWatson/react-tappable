@@ -1,7 +1,7 @@
 React-Tappable
 ==============
 
-Tappable component for React. Abstracts touch events to implement `onTap` and `onPress`.
+Tappable component for React. Abstracts touch events to implement `onTap`, `onPress`, and pinch events.
 
 The events mimic their native equivalents as closely as possible:
 
@@ -75,8 +75,8 @@ These are the special events implemented by `Tappable`.
 
 Pinch events come with a special object with additional data to actually be more useful than the native events:
 
-* touches: Object - {identifier, pageX, pageY} - raw data from the event
-* center: Object - {x,y} - Calculated center between the two touch points
+* touches: Array of Objects - {identifier, pageX, pageY} - raw data from the event
+* center: Object - {x, y} - Calculated center between the two touch points
 * angle: Degrees - angle of the line connecting the two touch points to the X-axis
 * distance: Number of pixels - beween the two touch points
 * displacement: Object {x, y} - offset of the center since the pinch began
