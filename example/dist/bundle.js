@@ -142,7 +142,7 @@ var Mixin = {
 		if (event.touches.length === 1) {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
-			this.initPressDetection(this.endTouch);
+			this.initPressDetection(event, this.endTouch);
 			this.setState({
 				isActive: true
 			});
@@ -260,10 +260,10 @@ var Mixin = {
 		this._scrollPos = undefined;
 	},
 
-	initPressDetection: function(callback) {
+	initPressDetection: function(event, callback) {
 		if (!this.props.onPress) return;
 		this._pressTimeout = setTimeout(function() {
-			this.props.onPress();
+			this.props.onPress(event);
 			callback();
 		}.bind(this), this.props.pressDelay);
 	},
@@ -334,7 +334,7 @@ var Mixin = {
 		}
 		if (this.props.onMouseDown && this.props.onMouseDown(event) === false) return;
 		this.processEvent(event);
-		this.initPressDetection(this.endMouseEvent);
+		this.initPressDetection(event, this.endMouseEvent);
 		this._mouseDown = true;
 		this.setState({
 			isActive: true
