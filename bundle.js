@@ -142,7 +142,7 @@ var Mixin = {
 		if (event.touches.length === 1) {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
-			this.initPressDetection(this.endTouch);
+			this.initPressDetection(event, this.endTouch);
 			this.setState({
 				isActive: true
 			});
@@ -178,7 +178,18 @@ var Mixin = {
 		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
-		var currentPinch = getPinchProps(touches); //TODO add helper function to order touches by identifier
+
+		if(touches.length !== 2){
+			return this.onPinchEnd(event) // bail out before disaster
+		}
+
+		var currentPinch =
+			touches[0].identifier === this._initialPinch.touches[0].identifier && touches[1].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches) // the touches are in the correct order
+			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches.reverse()) // the touches have somehow changed order
+			:
+				getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
@@ -220,9 +231,11 @@ var Mixin = {
 		this._initialPinch = this._lastPinch = null;
 
 		// If one finger is still on screen, it should start a new touch event for swiping etc
-		if (event.touches.length === 1) {
-			this.onTouchStart(event);
-		}
+		// But it should never fire an onTap or onPress event.
+		// Since there is no support swipes yet, this should be disregarded for now
+		// if (event.touches.length === 1) {
+		// 	this.onTouchStart(event);
+		// }
 	},
 
 	initScrollDetection: function() {
@@ -260,10 +273,10 @@ var Mixin = {
 		this._scrollPos = undefined;
 	},
 
-	initPressDetection: function(callback) {
+	initPressDetection: function(event, callback) {
 		if (!this.props.onPress) return;
 		this._pressTimeout = setTimeout(function() {
-			this.props.onPress();
+			this.props.onPress(event);
 			callback();
 		}.bind(this), this.props.pressDelay);
 	},
@@ -334,7 +347,7 @@ var Mixin = {
 		}
 		if (this.props.onMouseDown && this.props.onMouseDown(event) === false) return;
 		this.processEvent(event);
-		this.initPressDetection(this.endMouseEvent);
+		this.initPressDetection(event, this.endMouseEvent);
 		this._mouseDown = true;
 		this.setState({
 			isActive: true
@@ -433,23 +446,24 @@ var component = React.createClass({
 		var style = {};
 		extend(style, this.touchStyles(), props.style);
 
-		var newComponentProps = {
+		var newComponentProps = extend({}, props, {
 			style: style,
 			className: className,
 			disabled: props.disabled,
-			onTouchStart: this.onTouchStart,
-			onTouchMove: this.onTouchMove,
-			onTouchEnd: this.onTouchEnd,
-			onMouseDown: this.onMouseDown,
-			onMouseMove: this.onMouseMove,
-			onMouseUp: this.onMouseUp,
-			onMouseOut: this.onMouseOut
-		};
+			handlers: this.handlers
+		}, this.handlers());
 
-		var dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
-		dataOrAriaPropNames.forEach(function (propName) {
-			newComponentProps[propName] = props[propName];
-		});
+		delete newComponentProps.onTap;
+		delete newComponentProps.onPress;
+		delete newComponentProps.onPinchStart;
+		delete newComponentProps.onPinchMove;
+		delete newComponentProps.onPinchEnd;
+		delete newComponentProps.moveThreshold;
+		delete newComponentProps.pressDelay;
+		delete newComponentProps.pressMoveThreshold;
+		delete newComponentProps.preventDefault;
+		delete newComponentProps.stopPropagation;
+		delete newComponentProps.component;
 
 		return React.createElement(props.component, newComponentProps, props.children);
 	}
