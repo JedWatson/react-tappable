@@ -43,8 +43,11 @@ var Mixin = {
 		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
 		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
 
-		onTap: React.PropTypes.func,                 // fires when a tap is detected
+		onDrag: React.PropTypes.func,                // fires when a mouseMove/touchMove occurs
 		onPress: React.PropTypes.func,               // fires when a press is detected
+		onRelease: React.PropTypes.func,             // fires when a touchEnd/mouseUp occurs
+		onTap: React.PropTypes.func,                 // fires when a tap is detected
+
 		onTouchStart: React.PropTypes.func,          // pass-through touch event
 		onTouchMove: React.PropTypes.func,           // pass-through touch event
 		onTouchEnd: React.PropTypes.func,            // pass-through touch event
@@ -121,7 +124,7 @@ var Mixin = {
 
 		this._lastPinch = this._initialPinch;
 
-		this.props.onPinchStart && this.props.onPinchStart(this._initialPinch, event);
+		if (this.props.onPinchStart) this.props.onPinchStart(this._initialPinch, event);
 	},
 
 	onPinchMove: function(event) {
@@ -160,7 +163,7 @@ var Mixin = {
 		currentPinch.zoom = currentPinch.distance / this._initialPinch.distance;
 		currentPinch.zoomVelocity = (currentPinch.zoom - this._lastPinch.zoom) / timeSinceLastPinch;
 
-		this.props.onPinchMove && this.props.onPinchMove(currentPinch, event);
+		if (this.props.onPinchMove) this.props.onPinchMove(currentPinch, event);
 
 		this._lastPinch = currentPinch;
 	},
@@ -176,7 +179,7 @@ var Mixin = {
 			currentPinch.zoomVelocity = 0;
 		}
 
-		this.props.onPinchEnd && this.props.onPinchEnd(currentPinch, event);
+		if (this.props.onPinchEnd) this.props.onPinchEnd(currentPinch, event);
 
 		this._initialPinch = this._lastPinch = null;
 
@@ -241,7 +244,8 @@ var Mixin = {
 
 			if (this.detectScroll()) return this.endTouch(event);
 
-			this.props.onTouchMove && this.props.onTouchMove(event);
+			if (this.props.onTouchMove) this.props.onTouchMove(event);
+			if (this.props.onDrag) this.props.onDrag(event);
 			this._lastTouch = getTouchProps(event.touches[0]);
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
@@ -270,9 +274,11 @@ var Mixin = {
 		if (this._initialTouch) {
 			this.processEvent(event);
 			var movement = this.calculateMovement(this._lastTouch);
+
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				this.props.onTap(event);
 			}
+
 			this.endTouch(event);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
 			this.onPinchEnd(event);
@@ -282,7 +288,10 @@ var Mixin = {
 
 	endTouch: function(event) {
 		this.cancelPressDetection();
+
 		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
+		if (event && this.props.onRelease) this.props.onRelease(event);
+
 		this._initialTouch = null;
 		this._lastTouch = null;
 		this.setState({
@@ -307,21 +316,23 @@ var Mixin = {
 	onMouseMove: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
-		this.props.onMouseMove && this.props.onMouseMove(event);
+		if (this.props.onMouseMove) this.props.onMouseMove(event);
+		if (this.props.onDrag) this.props.onDrag(event);
 	},
 
 	onMouseUp: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
-		this.props.onMouseUp && this.props.onMouseUp(event);
-		this.props.onTap && this.props.onTap(event);
+		if (this.props.onMouseUp) this.props.onMouseUp(event);
+		if (this.props.onRelease) this.props.onRelease(event);
+		if (this.props.onTap) this.props.onTap(event);
 		this.endMouseEvent();
 	},
 
 	onMouseOut: function(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
-		this.props.onMouseOut && this.props.onMouseOut(event);
+		if (this.props.onMouseOut) this.props.onMouseOut(event);
 		this.endMouseEvent();
 	},
 
