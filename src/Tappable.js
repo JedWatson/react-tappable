@@ -351,7 +351,7 @@ var Mixin = {
  * ==================
  */
 
-var component = React.createClass({
+var Component = React.createClass({
 
 	displayName: 'Tappable',
 
@@ -401,5 +401,5 @@ var component = React.createClass({
 	}
 });
 
-component.Mixin = Mixin;
-module.exports = component;
+Component.Mixin = Mixin;
+module.exports = Component;
