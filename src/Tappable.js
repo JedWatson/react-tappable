@@ -271,6 +271,7 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				this.props.onTap(event);
+				event.preventDefault();
 			}
 			this.endTouch(event);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
