@@ -188,8 +188,7 @@ var Mixin = {
 				getPinchProps(touches) // the touches are in the correct order
 			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
 				getPinchProps(touches.reverse()) // the touches have somehow changed order
-			:
-				getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
+				: getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
@@ -322,6 +321,7 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				this.props.onTap(event);
+				event.preventDefault();
 			}
 			this.endTouch(event);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
@@ -383,19 +383,6 @@ var Mixin = {
 		});
 	},
 
-	touchStyles: function() {
-		return {
-			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-			WebkitTouchCallout: 'none',
-			WebkitUserSelect: 'none',
-			KhtmlUserSelect: 'none',
-			MozUserSelect: 'none',
-			msUserSelect: 'none',
-			userSelect: 'none',
-			cursor: 'pointer'
-		};
-	},
-
 	handlers: function() {
 		return {
 			onTouchStart: this.onTouchStart,
@@ -414,7 +401,7 @@ var Mixin = {
  * ==================
  */
 
-var component = React.createClass({
+var Component = React.createClass({
 
 	displayName: 'Tappable',
 
@@ -424,7 +411,6 @@ var component = React.createClass({
 		component: React.PropTypes.any,           // component to create
 		className: React.PropTypes.string,        // optional className
 		classBase: React.PropTypes.string,        // base for generated classNames
-		style: React.PropTypes.object,            // additional style properties for the component
 		disabled: React.PropTypes.bool            // only applies to buttons
 	},
 
@@ -443,11 +429,7 @@ var component = React.createClass({
 			className += ' ' + props.className;
 		}
 
-		var style = {};
-		extend(style, this.touchStyles(), props.style);
-
 		var newComponentProps = extend({}, props, {
-			style: style,
 			className: className,
 			disabled: props.disabled,
 			handlers: this.handlers
@@ -469,7 +451,7 @@ var component = React.createClass({
 	}
 });
 
-component.Mixin = Mixin;
-module.exports = component;
+Component.Mixin = Mixin;
+module.exports = Component;
 
 },{"react":undefined,"react/lib/Object.assign":1}]},{},[]);
