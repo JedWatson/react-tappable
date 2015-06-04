@@ -373,7 +373,7 @@ var component = React.createClass({
 
 	render: function() {
 		var props = this.props;
-		var className = props.classBase + (this.state.isActive ? '-active' : '-inactive');
+		var className = props.classBase + (this.state.isActive ? ' is-pressed' : '');
 
 		if (props.className) {
 			className += ' ' + props.className;
