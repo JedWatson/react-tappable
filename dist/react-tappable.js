@@ -130,7 +130,17 @@ var Mixin = {
 		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
-		var currentPinch = getPinchProps(touches); //TODO add helper function to order touches by identifier
+
+		if(touches.length !== 2){
+			return this.onPinchEnd(event) // bail out before disaster
+		}
+
+		var currentPinch =
+			touches[0].identifier === this._initialPinch.touches[0].identifier && touches[1].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches) // the touches are in the correct order
+			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
+				getPinchProps(touches.reverse()) // the touches have somehow changed order
+				: getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
@@ -172,9 +182,11 @@ var Mixin = {
 		this._initialPinch = this._lastPinch = null;
 
 		// If one finger is still on screen, it should start a new touch event for swiping etc
-		if (event.touches.length === 1) {
-			this.onTouchStart(event);
-		}
+		// But it should never fire an onTap or onPress event.
+		// Since there is no support swipes yet, this should be disregarded for now
+		// if (event.touches.length === 1) {
+		// 	this.onTouchStart(event);
+		// }
 	},
 
 	initScrollDetection: function() {
@@ -261,6 +273,7 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				this.props.onTap(event);
+				event.preventDefault();
 			}
 			this.endTouch(event);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
@@ -353,7 +366,7 @@ var Mixin = {
  * ==================
  */
 
-var component = React.createClass({
+var Component = React.createClass({
 
 	displayName: 'Tappable',
 
@@ -385,30 +398,31 @@ var component = React.createClass({
 		var style = {};
 		extend(style, this.touchStyles(), props.style);
 
-		var newComponentProps = {
+		var newComponentProps = extend({}, props, {
 			style: style,
 			className: className,
 			disabled: props.disabled,
-			onTouchStart: this.onTouchStart,
-			onTouchMove: this.onTouchMove,
-			onTouchEnd: this.onTouchEnd,
-			onMouseDown: this.onMouseDown,
-			onMouseMove: this.onMouseMove,
-			onMouseUp: this.onMouseUp,
-			onMouseOut: this.onMouseOut
-		};
+			handlers: this.handlers
+		}, this.handlers());
 
-		var dataOrAriaPropNames = Object.keys(props).filter(isDataOrAriaProp);
-		dataOrAriaPropNames.forEach(function (propName) {
-			newComponentProps[propName] = props[propName];
-		});
+		delete newComponentProps.onTap;
+		delete newComponentProps.onPress;
+		delete newComponentProps.onPinchStart;
+		delete newComponentProps.onPinchMove;
+		delete newComponentProps.onPinchEnd;
+		delete newComponentProps.moveThreshold;
+		delete newComponentProps.pressDelay;
+		delete newComponentProps.pressMoveThreshold;
+		delete newComponentProps.preventDefault;
+		delete newComponentProps.stopPropagation;
+		delete newComponentProps.component;
 
 		return React.createElement(props.component, newComponentProps, props.children);
 	}
 });
 
-component.Mixin = Mixin;
-module.exports = component;
+Component.Mixin = Mixin;
+module.exports = Component;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"react/lib/Object.assign":2}],2:[function(require,module,exports){
