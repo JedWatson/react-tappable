@@ -358,11 +358,11 @@ var component = React.createClass({
 	mixins: [Mixin],
 
 	propTypes: {
-		component: React.PropTypes.any,           // component to create
-		className: React.PropTypes.string,        // optional className
 		classBase: React.PropTypes.string,        // base for generated classNames
-		style: React.PropTypes.object,            // additional style properties for the component
-		disabled: React.PropTypes.bool            // only applies to buttons
+		className: React.PropTypes.string,        // optional className
+		component: React.PropTypes.any,           // component to create
+		disabled: React.PropTypes.bool,           // only applies to buttons
+		style: React.PropTypes.object             // additional style properties for the component
 	},
 
 	getDefaultProps: function() {
