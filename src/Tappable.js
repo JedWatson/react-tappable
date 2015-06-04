@@ -361,7 +361,6 @@ var component = React.createClass({
 		classBase: React.PropTypes.string,        // base for generated classNames
 		className: React.PropTypes.string,        // optional className
 		component: React.PropTypes.any,           // component to create
-		disabled: React.PropTypes.bool,           // only applies to buttons
 		style: React.PropTypes.object             // additional style properties for the component
 	},
 
@@ -382,7 +381,6 @@ var component = React.createClass({
 
 		var newComponentProps = extend({}, props, {
 			className: className,
-			disabled: props.disabled,
 			handlers: this.handlers
 		}, this.handlers());
 
