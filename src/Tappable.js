@@ -361,7 +361,6 @@ var component = React.createClass({
 		component: React.PropTypes.any,           // component to create
 		className: React.PropTypes.string,        // optional className
 		classBase: React.PropTypes.string,        // base for generated classNames
-		style: React.PropTypes.object,            // additional style properties for the component
 		disabled: React.PropTypes.bool            // only applies to buttons
 	},
 
