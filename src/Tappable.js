@@ -138,8 +138,7 @@ var Mixin = {
 				getPinchProps(touches) // the touches are in the correct order
 			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
 				getPinchProps(touches.reverse()) // the touches have somehow changed order
-			:
-				getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
+				: getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
