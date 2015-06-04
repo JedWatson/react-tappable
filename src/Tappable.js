@@ -333,19 +333,6 @@ var Mixin = {
 		});
 	},
 
-	touchStyles: function() {
-		return {
-			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-			WebkitTouchCallout: 'none',
-			WebkitUserSelect: 'none',
-			KhtmlUserSelect: 'none',
-			MozUserSelect: 'none',
-			msUserSelect: 'none',
-			userSelect: 'none',
-			cursor: 'pointer'
-		};
-	},
-
 	handlers: function() {
 		return {
 			onTouchStart: this.onTouchStart,
@@ -393,11 +380,7 @@ var component = React.createClass({
 			className += ' ' + props.className;
 		}
 
-		var style = {};
-		extend(style, this.touchStyles(), props.style);
-
 		var newComponentProps = extend({}, props, {
-			style: style,
 			className: className,
 			disabled: props.disabled,
 			handlers: this.handlers
