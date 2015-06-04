@@ -360,8 +360,7 @@ var component = React.createClass({
 	propTypes: {
 		classBase: React.PropTypes.string,        // base for generated classNames
 		className: React.PropTypes.string,        // optional className
-		component: React.PropTypes.any,           // component to create
-		style: React.PropTypes.object             // additional style properties for the component
+		component: React.PropTypes.any            // component to create
 	},
 
 	getDefaultProps: function() {
