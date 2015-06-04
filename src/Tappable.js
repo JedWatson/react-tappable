@@ -358,10 +358,9 @@ var component = React.createClass({
 	mixins: [Mixin],
 
 	propTypes: {
-		component: React.PropTypes.any,           // component to create
-		className: React.PropTypes.string,        // optional className
 		classBase: React.PropTypes.string,        // base for generated classNames
-		disabled: React.PropTypes.bool            // only applies to buttons
+		className: React.PropTypes.string,        // optional className
+		component: React.PropTypes.any            // component to create
 	},
 
 	getDefaultProps: function() {
@@ -373,7 +372,7 @@ var component = React.createClass({
 
 	render: function() {
 		var props = this.props;
-		var className = props.classBase + (this.state.isActive ? '-active' : '-inactive');
+		var className = props.classBase + (this.state.isActive ? ' is-pressed' : '');
 
 		if (props.className) {
 			className += ' ' + props.className;
@@ -381,7 +380,6 @@ var component = React.createClass({
 
 		var newComponentProps = extend({}, props, {
 			className: className,
-			disabled: props.disabled,
 			handlers: this.handlers
 		}, this.handlers());
 
