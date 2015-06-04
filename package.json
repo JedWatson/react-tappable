@@ -40,8 +40,12 @@
     "react": "global:React"
   },
   "scripts": {
-    "test": "echo \"no tests yet\" && exit 0",
-    "lint": "eslint ./; true"
+    "build": "NODE_ENV=production gulp build",
+    "lint": "eslint ./; true",
+    "pubilsh:examples": "gulp publish:examples",
+    "release": "gulp release",
+    "start": "gulp dev",
+    "test": "echo \"no tests yet\" && exit 0"
   },
   "keywords": [
     "react",
