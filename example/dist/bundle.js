@@ -48,6 +48,8 @@ function assign(target, sources) {
 module.exports = assign;
 
 },{}],"react-tappable":[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 
 // Enable React Touch Events
@@ -87,28 +89,28 @@ var extend = require('react/lib/Object.assign');
 
 var Mixin = {
 	propTypes: {
-		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
-		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
-		pressMoveThreshold: React.PropTypes.number,  // pixels to move before cancelling press
-		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
-		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
+		moveThreshold: React.PropTypes.number, // pixels to move before cancelling tap
+		pressDelay: React.PropTypes.number, // ms to wait before detecting a press
+		pressMoveThreshold: React.PropTypes.number, // pixels to move before cancelling press
+		preventDefault: React.PropTypes.bool, // whether to preventDefault on all events
+		stopPropagation: React.PropTypes.bool, // whether to stopPropagation on all events
 
-		onTap: React.PropTypes.func,                 // fires when a tap is detected
-		onPress: React.PropTypes.func,               // fires when a press is detected
-		onTouchStart: React.PropTypes.func,          // pass-through touch event
-		onTouchMove: React.PropTypes.func,           // pass-through touch event
-		onTouchEnd: React.PropTypes.func,            // pass-through touch event
-		onMouseDown: React.PropTypes.func,           // pass-through mouse event
-		onMouseUp: React.PropTypes.func,             // pass-through mouse event
-		onMouseMove: React.PropTypes.func,           // pass-through mouse event
-		onMouseOut: React.PropTypes.func,            // pass-through mouse event
+		onTap: React.PropTypes.func, // fires when a tap is detected
+		onPress: React.PropTypes.func, // fires when a press is detected
+		onTouchStart: React.PropTypes.func, // pass-through touch event
+		onTouchMove: React.PropTypes.func, // pass-through touch event
+		onTouchEnd: React.PropTypes.func, // pass-through touch event
+		onMouseDown: React.PropTypes.func, // pass-through mouse event
+		onMouseUp: React.PropTypes.func, // pass-through mouse event
+		onMouseMove: React.PropTypes.func, // pass-through mouse event
+		onMouseOut: React.PropTypes.func, // pass-through mouse event
 
-		onPinchStart: React.PropTypes.func,          // fires when a pinch gesture is started
-		onPinchMove: React.PropTypes.func,           // fires on every touch-move when a pinch action is active
-		onPinchEnd: React.PropTypes.func             // fires when a pinch action ends
+		onPinchStart: React.PropTypes.func, // fires when a pinch gesture is started
+		onPinchMove: React.PropTypes.func, // fires on every touch-move when a pinch action is active
+		onPinchEnd: React.PropTypes.func // fires when a pinch action ends
 	},
 
-	getDefaultProps: function() {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			moveThreshold: 100,
 			pressDelay: 1000,
@@ -116,7 +118,7 @@ var Mixin = {
 		};
 	},
 
-	getInitialState: function() {
+	getInitialState: function getInitialState() {
 		return {
 			isActive: false,
 			touchActive: false,
@@ -124,17 +126,17 @@ var Mixin = {
 		};
 	},
 
-	componentWillUnmount: function() {
+	componentWillUnmount: function componentWillUnmount() {
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
 	},
 
-	processEvent: function(event) {
+	processEvent: function processEvent(event) {
 		if (this.props.preventDefault) event.preventDefault();
 		if (this.props.stopPropagation) event.stopPropagation();
 	},
 
-	onTouchStart: function(event) {
+	onTouchStart: function onTouchStart(event) {
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
 		window._blockMouseEvents = true;
@@ -151,7 +153,7 @@ var Mixin = {
 		}
 	},
 
-	onPinchStart: function(event) {
+	onPinchStart: function onPinchStart(event) {
 		// in case the two touches didn't start exactly at the same time
 		if (this._initialTouch) this.endTouch();
 
@@ -174,21 +176,19 @@ var Mixin = {
 		this.props.onPinchStart && this.props.onPinchStart(this._initialPinch, event);
 	},
 
-	onPinchMove: function(event) {
+	onPinchMove: function onPinchMove(event) {
 		if (this._initialTouch) this.endTouch();
 
 		var touches = event.touches;
 
-		if(touches.length !== 2){
+		if (touches.length !== 2) {
 			return this.onPinchEnd(event) // bail out before disaster
+			;
 		}
 
-		var currentPinch =
-			touches[0].identifier === this._initialPinch.touches[0].identifier && touches[1].identifier === this._initialPinch.touches[1].identifier ?
-				getPinchProps(touches) // the touches are in the correct order
-			: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ?
-				getPinchProps(touches.reverse()) // the touches have somehow changed order
-				: getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
+		var currentPinch = touches[0].identifier === this._initialPinch.touches[0].identifier && touches[1].identifier === this._initialPinch.touches[1].identifier ? getPinchProps(touches) // the touches are in the correct order
+		: touches[1].identifier === this._initialPinch.touches[0].identifier && touches[0].identifier === this._initialPinch.touches[1].identifier ? getPinchProps(touches.reverse()) // the touches have somehow changed order
+		: getPinchProps(touches); // something is wrong, but we still have two touch-points, so we try not to fail
 
 		currentPinch.displacement = {
 			x: currentPinch.center.x - this._initialPinch.center.x,
@@ -214,7 +214,7 @@ var Mixin = {
 		this._lastPinch = currentPinch;
 	},
 
-	onPinchEnd: function(event) {
+	onPinchEnd: function onPinchEnd(event) {
 		// TODO use helper to order touches by identifier and use actual values on touchEnd.
 		var currentPinch = extend({}, this._lastPinch);
 		currentPinch.time = Date.now();
@@ -237,7 +237,7 @@ var Mixin = {
 		// }
 	},
 
-	initScrollDetection: function() {
+	initScrollDetection: function initScrollDetection() {
 		this._scrollParents = [];
 		this._scrollPos = { top: 0, left: 0 };
 		var node = this.getDOMNode();
@@ -251,14 +251,14 @@ var Mixin = {
 		}
 	},
 
-	calculateMovement: function(touch) {
+	calculateMovement: function calculateMovement(touch) {
 		return {
 			x: Math.abs(touch.clientX - this._initialTouch.clientX),
 			y: Math.abs(touch.clientY - this._initialTouch.clientY)
 		};
 	},
 
-	detectScroll: function() {
+	detectScroll: function detectScroll() {
 		var currentScrollPos = { top: 0, left: 0 };
 		for (var i = 0; i < this._scrollParents.length; i++) {
 			currentScrollPos.top += this._scrollParents[i].scrollTop;
@@ -267,24 +267,24 @@ var Mixin = {
 		return !(currentScrollPos.top === this._scrollPos.top && currentScrollPos.left === this._scrollPos.left);
 	},
 
-	cleanupScrollDetection: function() {
+	cleanupScrollDetection: function cleanupScrollDetection() {
 		this._scrollParents = undefined;
 		this._scrollPos = undefined;
 	},
 
-	initPressDetection: function(event, callback) {
+	initPressDetection: function initPressDetection(event, callback) {
 		if (!this.props.onPress) return;
-		this._pressTimeout = setTimeout(function() {
+		this._pressTimeout = setTimeout((function () {
 			this.props.onPress(event);
 			callback();
-		}.bind(this), this.props.pressDelay);
+		}).bind(this), this.props.pressDelay);
 	},
 
-	cancelPressDetection: function() {
+	cancelPressDetection: function cancelPressDetection() {
 		clearTimeout(this._pressTimeout);
 	},
 
-	onTouchMove: function(event) {
+	onTouchMove: function onTouchMove(event) {
 		if (this._initialTouch) {
 			this.processEvent(event);
 
@@ -315,7 +315,7 @@ var Mixin = {
 		}
 	},
 
-	onTouchEnd: function(event) {
+	onTouchEnd: function onTouchEnd(event) {
 		if (this._initialTouch) {
 			this.processEvent(event);
 			var movement = this.calculateMovement(this._lastTouch);
@@ -324,13 +324,13 @@ var Mixin = {
 				event.preventDefault();
 			}
 			this.endTouch(event);
-		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
+		} else if (this._initialPinch && event.touches.length + event.changedTouches.length === 2) {
 			this.onPinchEnd(event);
 			event.preventDefault();
 		}
 	},
 
-	endTouch: function(event) {
+	endTouch: function endTouch(event) {
 		this.cancelPressDetection();
 		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
 		this._initialTouch = null;
@@ -340,7 +340,7 @@ var Mixin = {
 		});
 	},
 
-	onMouseDown: function(event) {
+	onMouseDown: function onMouseDown(event) {
 		if (window._blockMouseEvents) {
 			window._blockMouseEvents = false;
 			return;
@@ -354,13 +354,13 @@ var Mixin = {
 		});
 	},
 
-	onMouseMove: function(event) {
+	onMouseMove: function onMouseMove(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseMove && this.props.onMouseMove(event);
 	},
 
-	onMouseUp: function(event) {
+	onMouseUp: function onMouseUp(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseUp && this.props.onMouseUp(event);
@@ -368,14 +368,14 @@ var Mixin = {
 		this.endMouseEvent();
 	},
 
-	onMouseOut: function(event) {
+	onMouseOut: function onMouseOut(event) {
 		if (window._blockMouseEvents || !this._mouseDown) return;
 		this.processEvent(event);
 		this.props.onMouseOut && this.props.onMouseOut(event);
 		this.endMouseEvent();
 	},
 
-	endMouseEvent: function() {
+	endMouseEvent: function endMouseEvent() {
 		this.cancelPressDetection();
 		this._mouseDown = false;
 		this.setState({
@@ -383,7 +383,7 @@ var Mixin = {
 		});
 	},
 
-	touchStyles: function() {
+	touchStyles: function touchStyles() {
 		return {
 			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
 			WebkitTouchCallout: 'none',
@@ -396,7 +396,7 @@ var Mixin = {
 		};
 	},
 
-	handlers: function() {
+	handlers: function handlers() {
 		return {
 			onTouchStart: this.onTouchStart,
 			onTouchMove: this.onTouchMove,
@@ -421,21 +421,21 @@ var Component = React.createClass({
 	mixins: [Mixin],
 
 	propTypes: {
-		component: React.PropTypes.any,           // component to create
-		className: React.PropTypes.string,        // optional className
-		classBase: React.PropTypes.string,        // base for generated classNames
-		style: React.PropTypes.object,            // additional style properties for the component
-		disabled: React.PropTypes.bool            // only applies to buttons
+		component: React.PropTypes.any, // component to create
+		className: React.PropTypes.string, // optional className
+		classBase: React.PropTypes.string, // base for generated classNames
+		style: React.PropTypes.object, // additional style properties for the component
+		disabled: React.PropTypes.bool // only applies to buttons
 	},
 
-	getDefaultProps: function() {
+	getDefaultProps: function getDefaultProps() {
 		return {
 			component: 'span',
 			classBase: 'Tappable'
 		};
 	},
 
-	render: function() {
+	render: function render() {
 		var props = this.props;
 		var className = props.classBase + (this.state.isActive ? '-active' : '-inactive');
 
