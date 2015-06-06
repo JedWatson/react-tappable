@@ -28,8 +28,6 @@ function getPinchProps(touches) {
 	};
 }
 
-var extend = require('react/lib/Object.assign');
-
 /**
  * Tappable Mixin
  * ==============
@@ -109,7 +107,7 @@ var Mixin = {
 
 		this._initialPinch = getPinchProps(touches);
 
-		this._initialPinch = extend(this._initialPinch, {
+		this._initialPinch = Object.assign(this._initialPinch, {
 			displacement: { x: 0, y: 0 },
 			displacementVelocity: { x: 0, y: 0 },
 			rotation: 0,
@@ -166,7 +164,7 @@ var Mixin = {
 
 	onPinchEnd: function(event) {
 		// TODO use helper to order touches by identifier and use actual values on touchEnd.
-		var currentPinch = extend({}, this._lastPinch);
+		var currentPinch = Object.assign({}, this._lastPinch);
 		currentPinch.time = Date.now();
 
 		if (currentPinch.time - this._lastPinch.time > 16) {
@@ -394,9 +392,9 @@ var Component = React.createClass({
 		}
 
 		var style = {};
-		extend(style, this.touchStyles(), props.style);
+		Object.assign(style, this.touchStyles(), props.style);
 
-		var newComponentProps = extend({}, props, {
+		var newComponentProps = Object.assign({}, props, {
 			style: style,
 			className: className,
 			disabled: props.disabled,
