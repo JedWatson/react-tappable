@@ -1,54 +1,7 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/**
- * Copyright 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @providesModule Object.assign
- */
-
-// https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign
-
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"react-tappable":[function(require,module,exports){
 'use strict';
 
-function assign(target, sources) {
-  if (target == null) {
-    throw new TypeError('Object.assign target cannot be null or undefined');
-  }
-
-  var to = Object(target);
-  var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-  for (var nextIndex = 1; nextIndex < arguments.length; nextIndex++) {
-    var nextSource = arguments[nextIndex];
-    if (nextSource == null) {
-      continue;
-    }
-
-    var from = Object(nextSource);
-
-    // We don't currently support accessors nor proxies. Therefore this
-    // copy cannot throw. If we ever supported this then we must handle
-    // exceptions and side-effects. We don't support symbols so they won't
-    // be transferred.
-
-    for (var key in from) {
-      if (hasOwnProperty.call(from, key)) {
-        to[key] = from[key];
-      }
-    }
-  }
-
-  return to;
-}
-
-module.exports = assign;
-
-},{}],"react-tappable":[function(require,module,exports){
-'use strict';
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
 
@@ -79,8 +32,6 @@ function getPinchProps(touches) {
 		distance: Math.sqrt(Math.pow(Math.abs(touches[1].pageX - touches[0].pageX), 2) + Math.pow(Math.abs(touches[1].pageY - touches[0].pageY), 2))
 	};
 }
-
-var extend = require('react/lib/Object.assign');
 
 /**
  * Tappable Mixin
@@ -161,7 +112,7 @@ var Mixin = {
 
 		this._initialPinch = getPinchProps(touches);
 
-		this._initialPinch = extend(this._initialPinch, {
+		this._initialPinch = _extends(this._initialPinch, {
 			displacement: { x: 0, y: 0 },
 			displacementVelocity: { x: 0, y: 0 },
 			rotation: 0,
@@ -216,7 +167,7 @@ var Mixin = {
 
 	onPinchEnd: function onPinchEnd(event) {
 		// TODO use helper to order touches by identifier and use actual values on touchEnd.
-		var currentPinch = extend({}, this._lastPinch);
+		var currentPinch = _extends({}, this._lastPinch);
 		currentPinch.time = Date.now();
 
 		if (currentPinch.time - this._lastPinch.time > 16) {
@@ -444,9 +395,9 @@ var Component = React.createClass({
 		}
 
 		var style = {};
-		extend(style, this.touchStyles(), props.style);
+		_extends(style, this.touchStyles(), props.style);
 
-		var newComponentProps = extend({}, props, {
+		var newComponentProps = _extends({}, props, {
 			style: style,
 			className: className,
 			disabled: props.disabled,
@@ -472,4 +423,4 @@ var Component = React.createClass({
 Component.Mixin = Mixin;
 module.exports = Component;
 
-},{"react":undefined,"react/lib/Object.assign":1}]},{},[]);
+},{"react":undefined}]},{},[]);
