@@ -66,6 +66,13 @@ h6 {
   background: #eee;
   cursor: default;
 }
+.nested-tappable {
+  display: block;
+  margin: 15px 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  background: #ddd;
+}
 .Tappable-active {
   background: #5cc2f8;
 }

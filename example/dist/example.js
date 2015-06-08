@@ -44,6 +44,9 @@ var App = React.createClass({
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
 			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
 		};
+		var nestedEvents = {
+			onTap: this.handleEvent.bind(this, 'tap (nested)')
+		};
 		var toggleClass = this.state.scrolling ? 'scrolling-enabled' : 'scrolling-disabled';
 		return React.createElement(
 			'div',
@@ -74,7 +77,12 @@ var App = React.createClass({
 				React.createElement(
 					Tappable,
 					_extends({ preventDefault: !this.state.scrolling, component: 'div', className: 'tappable-area' }, events),
-					'Touch me'
+					'Touch me',
+					React.createElement(
+						Tappable,
+						_extends({ stopPropagation: true, className: 'nested-tappable' }, nestedEvents),
+						'Nested Tappable'
+					)
 				)
 			),
 			React.createElement(
