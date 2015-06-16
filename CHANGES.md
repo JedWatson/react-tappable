@@ -1,7 +1,11 @@
 # React-Tappable Changelog
 
-## v0.5.0-beta.1
+## v0.5.0 / 2015-06-16
 
+* Using Babel's polyfill for Object.assign
+* `lib` build (via Babel) is provided for use without further transpilation
+* `preventDefault` is called to clock the click event firing after a touch has been detected
+* React has been changed to a dev/peerDependency
 * Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
 * Older single touch based events don't fire when dealing with multi-touch
 * Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable
