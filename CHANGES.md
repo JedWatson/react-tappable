@@ -1,5 +1,10 @@
 # React-Tappable Changelog
 
+## v0.5.1 / 2015-06-17
+
+* Fixed issue where halting momentum scrolling would incorrectly fire a tap event
+* `onTap` now fires after the tappable's `setState` is complete, resolves some animation edge-case issues
+
 ## v0.5.0 / 2015-06-16
 
 * Using Babel's polyfill for Object.assign
