@@ -186,12 +186,14 @@ var Mixin = {
 	},
 
 	initScrollDetection: function() {
-		this._scrollParents = [];
 		this._scrollPos = { top: 0, left: 0 };
+		this._scrollParents = [];
+		this._scrollParentPos = [];
 		var node = this.getDOMNode();
 		while (node) {
 			if (node.scrollHeight > node.offsetHeight || node.scrollWidth > node.offsetWidth) {
 				this._scrollParents.push(node);
+				this._scrollParentPos.push(node.scrollTop + node.scrollLeft);
 				this._scrollPos.top += node.scrollTop;
 				this._scrollPos.left += node.scrollLeft;
 			}
@@ -268,7 +270,15 @@ var Mixin = {
 			this.processEvent(event);
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
-				this.props.onTap(event);
+				setTimeout(() => {
+					var finalParentScrollPos = this._scrollParents.map(node => node.scrollTop + node.scrollLeft);
+					var stoppedMomentumScroll = this._scrollParentPos.some((end, i) => {
+						return end !== finalParentScrollPos[i];
+					});
+					if (!stoppedMomentumScroll) {
+						this.props.onTap(event);
+					}
+				}, 16);
 				event.preventDefault();
 			}
 			this.endTouch(event);
