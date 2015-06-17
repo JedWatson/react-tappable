@@ -268,9 +268,11 @@ var Mixin = {
 	onTouchEnd: function(event) {
 		if (this._initialTouch) {
 			this.processEvent(event);
+			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
-				setTimeout(() => {
+				event.preventDefault();
+				afterEndTouch = () => {
 					var finalParentScrollPos = this._scrollParents.map(node => node.scrollTop + node.scrollLeft);
 					var stoppedMomentumScroll = this._scrollParentPos.some((end, i) => {
 						return end !== finalParentScrollPos[i];
@@ -278,24 +280,23 @@ var Mixin = {
 					if (!stoppedMomentumScroll) {
 						this.props.onTap(event);
 					}
-				}, 16);
-				event.preventDefault();
+				};
 			}
-			this.endTouch(event);
+			this.endTouch(event, afterEndTouch);
 		} else if (this._initialPinch && (event.touches.length + event.changedTouches.length) === 2) {
 			this.onPinchEnd(event);
 			event.preventDefault();
 		}
 	},
 
-	endTouch: function(event) {
+	endTouch: function(event, callback) {
 		this.cancelPressDetection();
 		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
 		this._initialTouch = null;
 		this._lastTouch = null;
 		this.setState({
 			isActive: false
-		});
+		}, callback);
 	},
 
 	onMouseDown: function(event) {
