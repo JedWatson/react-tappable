@@ -41,6 +41,7 @@ function getPinchProps(touches) {
 var Mixin = {
 	propTypes: {
 		moveThreshold: React.PropTypes.number, // pixels to move before cancelling tap
+		activeDelay: React.PropTypes.number, // ms to wait before adding the `-active` class
 		pressDelay: React.PropTypes.number, // ms to wait before detecting a press
 		pressMoveThreshold: React.PropTypes.number, // pixels to move before cancelling press
 		preventDefault: React.PropTypes.bool, // whether to preventDefault on all events
@@ -63,6 +64,7 @@ var Mixin = {
 
 	getDefaultProps: function getDefaultProps() {
 		return {
+			activeDelay: 0,
 			moveThreshold: 100,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
@@ -80,6 +82,7 @@ var Mixin = {
 	componentWillUnmount: function componentWillUnmount() {
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
+		this.clearActiveTimeout();
 	},
 
 	processEvent: function processEvent(event) {
@@ -91,27 +94,36 @@ var Mixin = {
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
 		window._blockMouseEvents = true;
-
 		if (event.touches.length === 1) {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
-			this.setState({
-				isActive: true
-			});
+			this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
 		} else if ((this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2) {
 			this.onPinchStart(event);
 		}
 	},
 
+	makeActive: function makeActive() {
+		if (!this.isMounted()) return;
+		this.clearActiveTimeout();
+		this.setState({
+			isActive: true
+		});
+	},
+
+	clearActiveTimeout: function clearActiveTimeout() {
+		clearTimeout(this._activeTimeout);
+		this._activeTimeout = false;
+	},
+
 	onPinchStart: function onPinchStart(event) {
 		// in case the two touches didn't start exactly at the same time
-		if (this._initialTouch) this.endTouch();
-
+		if (this._initialTouch) {
+			this.endTouch();
+		}
 		var touches = event.touches;
-
 		this._initialPinch = getPinchProps(touches);
-
 		this._initialPinch = _extends(this._initialPinch, {
 			displacement: { x: 0, y: 0 },
 			displacementVelocity: { x: 0, y: 0 },
@@ -121,17 +133,15 @@ var Mixin = {
 			zoomVelocity: 0,
 			time: Date.now()
 		});
-
 		this._lastPinch = this._initialPinch;
-
 		this.props.onPinchStart && this.props.onPinchStart(this._initialPinch, event);
 	},
 
 	onPinchMove: function onPinchMove(event) {
-		if (this._initialTouch) this.endTouch();
-
+		if (this._initialTouch) {
+			this.endTouch();
+		}
 		var touches = event.touches;
-
 		if (touches.length !== 2) {
 			return this.onPinchEnd(event) // bail out before disaster
 			;
@@ -254,9 +264,11 @@ var Mixin = {
 					this.setState({
 						isActive: false
 					});
+				} else if (this._activeTimeout) {
+					this.clearActiveTimeout();
 				}
 			} else {
-				if (!this.state.isActive) {
+				if (!this.state.isActive && !this._activeTimeout) {
 					this.setState({
 						isActive: true
 					});
@@ -298,12 +310,19 @@ var Mixin = {
 
 	endTouch: function endTouch(event, callback) {
 		this.cancelPressDetection();
-		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
+		this.clearActiveTimeout();
+		if (event && this.props.onTouchEnd) {
+			this.props.onTouchEnd(event);
+		}
 		this._initialTouch = null;
 		this._lastTouch = null;
-		this.setState({
-			isActive: false
-		}, callback);
+		if (this.state.isActive) {
+			this.setState({
+				isActive: false
+			}, callback);
+		} else if (callback) {
+			callback();
+		}
 	},
 
 	onMouseDown: function onMouseDown(event) {
