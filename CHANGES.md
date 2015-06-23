@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.5.2 / 2015-06-23
+
+* Added `activeDelay` prop, delays adding the `-active` class by the provided milliseconds for situations when you don't want to hilight a tap immediately (e.g. iOS Scrollable Lists)
+
 ## v0.5.1 / 2015-06-17
 
 * Fixed issue where halting momentum scrolling would incorrectly fire a tap event
