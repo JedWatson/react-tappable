@@ -36,6 +36,7 @@ function getPinchProps(touches) {
 var Mixin = {
 	propTypes: {
 		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
+		activeDelay: React.PropTypes.number,         // ms to wait before adding the `-active` class
 		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
 		pressMoveThreshold: React.PropTypes.number,  // pixels to move before cancelling press
 		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
@@ -58,6 +59,7 @@ var Mixin = {
 
 	getDefaultProps: function() {
 		return {
+			activeDelay: 0,
 			moveThreshold: 100,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
@@ -75,6 +77,7 @@ var Mixin = {
 	componentWillUnmount: function() {
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
+		this.clearActiveTimeout();
 	},
 
 	processEvent: function(event) {
@@ -90,12 +93,23 @@ var Mixin = {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
-			this.setState({
-				isActive: true
-			});
+			this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
 		} else if ((this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2) {
 			this.onPinchStart(event);
 		}
+	},
+
+	makeActive: function() {
+		if (!this.isMounted()) return;
+		this.clearActiveTimeout();
+		this.setState({
+			isActive: true
+		});
+	},
+
+	clearActiveTimeout: function() {
+		clearTimeout(this._activeTimeout);
+		this._activeTimeout = false;
 	},
 
 	onPinchStart: function(event) {
@@ -247,9 +261,11 @@ var Mixin = {
 					this.setState({
 						isActive: false
 					});
+				} else if (this._activeTimeout) {
+					this.clearActiveTimeout();
 				}
 			} else {
-				if (!this.state.isActive) {
+				if (!this.state.isActive && !this._activeTimeout) {
 					this.setState({
 						isActive: true
 					});
@@ -287,14 +303,19 @@ var Mixin = {
 
 	endTouch: function(event, callback) {
 		this.cancelPressDetection();
+		this.clearActiveTimeout();
 		if (event && this.props.onTouchEnd) {
 			this.props.onTouchEnd(event);
 		}
 		this._initialTouch = null;
 		this._lastTouch = null;
-		this.setState({
-			isActive: false
-		}, callback);
+		if (this.state.isActive) {
+			this.setState({
+				isActive: false
+			}, callback);
+		} else if (callback) {
+			callback();
+		}
 	},
 
 	onMouseDown: function(event) {
