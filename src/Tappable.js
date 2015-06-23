@@ -86,7 +86,6 @@ var Mixin = {
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
 		this.processEvent(event);
 		window._blockMouseEvents = true;
-
 		if (event.touches.length === 1) {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
@@ -101,12 +100,11 @@ var Mixin = {
 
 	onPinchStart: function(event) {
 		// in case the two touches didn't start exactly at the same time
-		if (this._initialTouch) this.endTouch();
-
+		if (this._initialTouch) {
+			this.endTouch();
+		}
 		var touches = event.touches;
-
 		this._initialPinch = getPinchProps(touches);
-
 		this._initialPinch = Object.assign(this._initialPinch, {
 			displacement: { x: 0, y: 0 },
 			displacementVelocity: { x: 0, y: 0 },
@@ -116,18 +114,16 @@ var Mixin = {
 			zoomVelocity: 0,
 			time: Date.now()
 		});
-
 		this._lastPinch = this._initialPinch;
-
 		this.props.onPinchStart && this.props.onPinchStart(this._initialPinch, event);
 	},
 
 	onPinchMove: function(event) {
-		if (this._initialTouch) this.endTouch();
-
+		if (this._initialTouch) {
+			this.endTouch();
+		}
 		var touches = event.touches;
-
-		if(touches.length !== 2){
+		if (touches.length !== 2){
 			return this.onPinchEnd(event) // bail out before disaster
 		}
 
@@ -291,7 +287,9 @@ var Mixin = {
 
 	endTouch: function(event, callback) {
 		this.cancelPressDetection();
-		if (event && this.props.onTouchEnd) this.props.onTouchEnd(event);
+		if (event && this.props.onTouchEnd) {
+			this.props.onTouchEnd(event);
+		}
 		this._initialTouch = null;
 		this._lastTouch = null;
 		this.setState({
