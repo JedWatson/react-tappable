@@ -52,6 +52,7 @@ var Tappable = require('react-tappable');
 
 ### Properties
 
+* `activeDelay` ms delay before the `-hilight` class is added, defaults to `0`
 * `component` component to render, defaults to `'span'`
 * `className` optional class name for the component
 * `classBase` base to use for the active/inactive classes
