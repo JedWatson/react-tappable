@@ -362,6 +362,11 @@ var Mixin = {
 		});
 	},
 
+	cancelTap: function() {
+		this.endTouch();
+		this._mouseDown = false;
+	},
+
 	touchStyles: function() {
 		return {
 			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
