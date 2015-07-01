@@ -1,7 +1,7 @@
 React-Tappable
 ==============
 
-Tappable component for React. Abstracts touch events to implement `onTap` and `onPress`.
+Tappable component for React. Abstracts touch events to implement `onTap`, `onPress`, and pinch events.
 
 The events mimic their native equivalents as closely as possible:
 
@@ -52,6 +52,7 @@ var Tappable = require('react-tappable');
 
 ### Properties
 
+* `activeDelay` ms delay before the `-hilight` class is added, defaults to `0`
 * `component` component to render, defaults to `'span'`
 * `className` optional class name for the component
 * `classBase` base to use for the active/inactive classes
@@ -60,6 +61,7 @@ var Tappable = require('react-tappable');
 * `pressMoveThreshold` px to allow movement before ignoring long presses; defaults to `5`
 * `preventDefault` (boolean) automatically call preventDefault on all events
 * `stopPropagation` (boolean) automatically call stopPropagation on all events
+* `style` (object) styles to apply to the component
 
 ### Special Events
 
@@ -75,8 +77,8 @@ These are the special events implemented by `Tappable`.
 
 Pinch events come with a special object with additional data to actually be more useful than the native events:
 
-* touches: Object - {identifier, pageX, pageY} - raw data from the event
-* center: Object - {x,y} - Calculated center between the two touch points
+* touches: Array of Objects - {identifier, pageX, pageY} - raw data from the event
+* center: Object - {x, y} - Calculated center between the two touch points
 * angle: Degrees - angle of the line connecting the two touch points to the X-axis
 * distance: Number of pixels - beween the two touch points
 * displacement: Object {x, y} - offset of the center since the pinch began
@@ -89,7 +91,6 @@ Pinch events come with a special object with additional data to actually be more
 
 #### Known Issues
 
-* The touches array isn't ordered according to the initial pinch event's identifiers. Rare cases, where the touch order changes, can result in surprising behaviour
 * The pinch implementation has not been thoroughly tested
 * Any touch event with 3 three or more touches is completely ignored.
 
@@ -107,10 +108,18 @@ The following native event handlers can also be specified.
 
 Returning `false` from `onTouchStart` or `onMouseDown` handlers will prevent `Tappable` from handling the event.
 
-### Changelog
+## Changelog
 
-#### v0.4.0-beta.1
+See [CHANGES.md](https://github.com/JedWatson/react-tappable/blob/master/CHANGES.md)
 
-* Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
-* Older single touch based events don't fire when dealing with multi-touch
-* Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable
+## License
+
+(The MIT License)
+
+Copyright (c) 2015 Jed Watson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

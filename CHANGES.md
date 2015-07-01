@@ -1,5 +1,24 @@
 # React-Tappable Changelog
 
+## v0.5.2 / 2015-06-23
+
+* Added `activeDelay` prop, delays adding the `-active` class by the provided milliseconds for situations when you don't want to hilight a tap immediately (e.g. iOS Scrollable Lists)
+
+## v0.5.1 / 2015-06-17
+
+* Fixed issue where halting momentum scrolling would incorrectly fire a tap event
+* `onTap` now fires after the tappable's `setState` is complete, resolves some animation edge-case issues
+
+## v0.5.0 / 2015-06-16
+
+* Using Babel's polyfill for Object.assign
+* `lib` build (via Babel) is provided for use without further transpilation
+* `preventDefault` is called to clock the click event firing after a touch has been detected
+* React has been changed to a dev/peerDependency
+* Added pinch events - `onPinchStart`, `onPinchMove`, `onPinchEnd`
+* Older single touch based events don't fire when dealing with multi-touch
+* Refactored the way props are passed to component. You can now pass in custom properties for the target component that are not meant for React-Tappable
+
 ## v0.4.0 / 2015-03-12
 
 ### Updated
