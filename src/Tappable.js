@@ -28,6 +28,17 @@ function getPinchProps(touches) {
 	};
 }
 
+var TOUCH_STYLES = {
+	WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	WebkitTouchCallout: 'none',
+	WebkitUserSelect: 'none',
+	KhtmlUserSelect: 'none',
+	MozUserSelect: 'none',
+	msUserSelect: 'none',
+	userSelect: 'none',
+	cursor: 'pointer'
+};
+
 /**
  * Tappable Mixin
  * ==============
@@ -368,16 +379,7 @@ var Mixin = {
 	},
 
 	touchStyles: function() {
-		return {
-			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-			WebkitTouchCallout: 'none',
-			WebkitUserSelect: 'none',
-			KhtmlUserSelect: 'none',
-			MozUserSelect: 'none',
-			msUserSelect: 'none',
-			userSelect: 'none',
-			cursor: 'pointer'
-		};
+		return TOUCH_STYLES;
 	},
 
 	handlers: function() {
@@ -454,4 +456,5 @@ var Component = React.createClass({
 });
 
 Component.Mixin = Mixin;
+Component.touchStyles = TOUCH_STYLES;
 module.exports = Component;
