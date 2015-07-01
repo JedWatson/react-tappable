@@ -61,6 +61,7 @@ var Tappable = require('react-tappable');
 * `pressMoveThreshold` px to allow movement before ignoring long presses; defaults to `5`
 * `preventDefault` (boolean) automatically call preventDefault on all events
 * `stopPropagation` (boolean) automatically call stopPropagation on all events
+* `style` (object) styles to apply to the component
 
 ### Special Events
 
