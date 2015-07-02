@@ -15,10 +15,12 @@ var taskConfig = {
 		dist: 'example/dist',
 		files: [
 			'index.html',
+			'pinch.html',
 			'.gitignore'
 		],
 		scripts: [
-			'example.js'
+			'example.js',
+			'pinch.js'
 		],
 		less: [
 			'example.less'
