@@ -322,9 +322,10 @@ var Mixin = {
 		this._initialTouch = null;
 		this._lastTouch = null;
 		if (this.state.isActive) {
+			callback();
 			this.setState({
 				isActive: false
-			}, callback);
+			});
 		} else if (callback) {
 			callback();
 		}
