@@ -1,8 +1,5 @@
 var React = require('react');
 
-// Enable React Touch Events
-React.initializeTouchEvents(true);
-
 function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
@@ -295,7 +292,7 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				event.preventDefault();
-				event.preventDefault = function(){}; 
+				event.preventDefault = function(){};
 				// calling preventDefault twice throws an error. This will fix that.
 				event.persist();
 				afterEndTouch = () => {
