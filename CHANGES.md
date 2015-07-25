@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.5.4 / 2015-07-25
+
+* fixed; removed `React.initializeTouchEvents`, no longer needed and breaks in React 0.14
+
 ## v0.5.3 / 2015-07-24
 
 * fixed; `preventDefault` issue on iOS
