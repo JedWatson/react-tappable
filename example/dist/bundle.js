@@ -5,9 +5,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 
-// Enable React Touch Events
-React.initializeTouchEvents(true);
-
 function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
