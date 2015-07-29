@@ -1,5 +1,10 @@
 # React-Tappable Changelog
 
+## v0.5.7 / 2015-07-30
+
+* fixed; removed former hacky attempts to handle the React eventpooling problem
+* added; support for React `0.14.0-beta1`
+
 ## v0.5.6 / 2015-07-29
 
 * fixed; regression introduced in `v0.5.5` where errors would occur in certain conditions
