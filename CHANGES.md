@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.5.6 / 2015-07-29
+
+* fixed; regression introduced in `v0.5.5` where errors would occur in certain conditions
+
 ## v0.5.5 / 2015-07-29
 
 * fixed; `afterEndTouch` is now called synchronously, which means the SyntheticTouch event behaves as expected. See [#39](https://github.com/JedWatson/react-tappable/issues/39) and [#47](https://github.com/JedWatson/react-tappable/pull/47) for more information.
