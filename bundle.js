@@ -5,9 +5,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 
-// Enable React Touch Events
-React.initializeTouchEvents(true);
-
 function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
@@ -331,9 +328,10 @@ var Mixin = {
 		this._initialTouch = null;
 		this._lastTouch = null;
 		if (this.state.isActive) {
+			callback();
 			this.setState({
 				isActive: false
-			}, callback);
+			});
 		} else if (callback) {
 			callback();
 		}
