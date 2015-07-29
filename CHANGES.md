@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.5.5 / 2015-07-29
+
+* fixed; `afterEndTouch` is now called synchronously, which means the SyntheticTouch event behaves as expected. See [#39](https://github.com/JedWatson/react-tappable/issues/39) and [#47](https://github.com/JedWatson/react-tappable/pull/47) for more information.
+
 ## v0.5.4 / 2015-07-25
 
 * fixed; removed `React.initializeTouchEvents`, no longer needed and breaks in React 0.14
