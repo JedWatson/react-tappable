@@ -297,9 +297,6 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				event.preventDefault();
-				event.preventDefault = function () {};
-				// calling preventDefault twice throws an error. This will fix that.
-				event.persist();
 				afterEndTouch = function () {
 					var finalParentScrollPos = _this._scrollParents.map(function (node) {
 						return node.scrollTop + node.scrollLeft;
