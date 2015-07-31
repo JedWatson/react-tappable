@@ -2,38 +2,38 @@ var React = require('react');
 var Tappable = require('react-tappable');
 
 var App = React.createClass({
-	getInitialState: function() {
+	getInitialState: function () {
 		return {
 			scrolling: false,
 			events: []
 		};
 	},
-	componentDidUpdate: function() {
+	componentDidUpdate: function () {
 		var log = this.refs.eventLog.getDOMNode();
 		log.scrollTop = log.scrollHeight;
 	},
-	handleEvent: function(name/*, event*/) {
+	handleEvent: function (name/*, event*/) {
 		var events = this.state.events;
 		events.push(name);
 		this.setState({
 			events: events
 		});
 	},
-	toggleScrolling: function() {
+	toggleScrolling: function () {
 		console.log('scrolling: ' + !this.state.scrolling);
 		this.setState({
 			scrolling: !this.state.scrolling
 		});
 	},
-	render: function() {
+	render: function () {
 		var events = {
 			onTap: this.handleEvent.bind(this, 'tap'),
 			onPress: this.handleEvent.bind(this, 'press'),
 			onTouchStart: this.handleEvent.bind(this, 'touchStart'),
-			//onTouchMove: this.handleEvent.bind(this, 'touchMove'),
+			// onTouchMove: this.handleEvent.bind(this, 'touchMove'),
 			onTouchEnd: this.handleEvent.bind(this, 'touchEnd'),
 			onMouseDown: this.handleEvent.bind(this, 'mouseDown'),
-			//onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
+			// onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
 			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
 		};
@@ -58,8 +58,8 @@ var App = React.createClass({
 				<div className="right">
 					<h3>Event log:</h3>
 					<div ref="eventLog" className="event-log">
-						{this.state.events.map(function(ev, i) {
-							return <div key={'e'+i}>{ev}</div>;
+						{this.state.events.map(function (ev, i) {
+							return <div key={'e' + i}>{ev}</div>;
 						})}
 					</div>
 				</div>
