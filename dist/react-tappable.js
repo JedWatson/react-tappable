@@ -5,9 +5,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = (window.React);
 
-// Enable React Touch Events
-React.initializeTouchEvents(true);
-
 function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
@@ -32,6 +29,17 @@ function getPinchProps(touches) {
 		distance: Math.sqrt(Math.pow(Math.abs(touches[1].pageX - touches[0].pageX), 2) + Math.pow(Math.abs(touches[1].pageY - touches[0].pageY), 2))
 	};
 }
+
+var TOUCH_STYLES = {
+	WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	WebkitTouchCallout: 'none',
+	WebkitUserSelect: 'none',
+	KhtmlUserSelect: 'none',
+	MozUserSelect: 'none',
+	msUserSelect: 'none',
+	userSelect: 'none',
+	cursor: 'pointer'
+};
 
 /**
  * Tappable Mixin
@@ -316,12 +324,13 @@ var Mixin = {
 		}
 		this._initialTouch = null;
 		this._lastTouch = null;
+		if (callback) {
+			callback();
+		}
 		if (this.state.isActive) {
 			this.setState({
 				isActive: false
-			}, callback);
-		} else if (callback) {
-			callback();
+			});
 		}
 	},
 
@@ -368,17 +377,13 @@ var Mixin = {
 		});
 	},
 
+	cancelTap: function cancelTap() {
+		this.endTouch();
+		this._mouseDown = false;
+	},
+
 	touchStyles: function touchStyles() {
-		return {
-			WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-			WebkitTouchCallout: 'none',
-			WebkitUserSelect: 'none',
-			KhtmlUserSelect: 'none',
-			MozUserSelect: 'none',
-			msUserSelect: 'none',
-			userSelect: 'none',
-			cursor: 'pointer'
-		};
+		return TOUCH_STYLES;
 	},
 
 	handlers: function handlers() {
@@ -455,6 +460,7 @@ var Component = React.createClass({
 });
 
 Component.Mixin = Mixin;
+Component.touchStyles = TOUCH_STYLES;
 module.exports = Component;
 
 },{}]},{},[1])(1)
