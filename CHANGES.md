@@ -1,5 +1,26 @@
 # React-Tappable Changelog
 
+## v0.5.7 / 2015-07-30
+
+* fixed; removed former hacky attempts to handle the React eventpooling problem
+* added; support for React `0.14.0-beta1`
+
+## v0.5.6 / 2015-07-29
+
+* fixed; regression introduced in `v0.5.5` where errors would occur in certain conditions
+
+## v0.5.5 / 2015-07-29
+
+* fixed; `afterEndTouch` is now called synchronously, which means the SyntheticTouch event behaves as expected. See [#39](https://github.com/JedWatson/react-tappable/issues/39) and [#47](https://github.com/JedWatson/react-tappable/pull/47) for more information.
+
+## v0.5.4 / 2015-07-25
+
+* fixed; removed `React.initializeTouchEvents`, no longer needed and breaks in React 0.14
+
+## v0.5.3 / 2015-07-24
+
+* fixed; `preventDefault` issue on iOS
+
 ## v0.5.2 / 2015-06-23
 
 * Added `activeDelay` prop, delays adding the `-active` class by the provided milliseconds for situations when you don't want to hilight a tap immediately (e.g. iOS Scrollable Lists)

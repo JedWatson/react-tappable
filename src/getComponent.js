@@ -1,9 +1,6 @@
 var React = require('react');
 var touchStyles = require('./touchStyles');
 
-// Enable React Touch Events
-React.initializeTouchEvents(true);
-
 /**
  * Tappable Component
  * ==================

@@ -176,7 +176,6 @@ var Mixin = {
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				event.preventDefault();
-				event.persist();
 				afterEndTouch = () => {
 					var finalParentScrollPos = this._scrollParents.map(node => node.scrollTop + node.scrollLeft);
 					var stoppedMomentumScroll = this._scrollParentPos.some((end, i) => {
@@ -202,12 +201,13 @@ var Mixin = {
 		}
 		this._initialTouch = null;
 		this._lastTouch = null;
+		if (callback) {
+			callback();
+		}
 		if (this.state.isActive) {
 			this.setState({
 				isActive: false
-			}, callback);
-		} else if (callback) {
-			callback();
+			});
 		}
 	},
 
