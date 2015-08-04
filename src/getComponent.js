@@ -40,8 +40,7 @@ module.exports = function (mixins) {
 			var newComponentProps = Object.assign({}, props, {
 				style: style,
 				className: className,
-				disabled: props.disabled,
-				handlers: this.handlers
+				disabled: props.disabled
 			}, this.handlers());
 
 			delete newComponentProps.onTap;
