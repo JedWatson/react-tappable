@@ -1,5 +1,11 @@
 # React-Tappable Changelog
 
+## v0.6.0 / 2015-07-31
+
+This release contains a major refactor that makes `react-tappable` more modular, thanks to [Naman Goel](https://github.com/nmn)
+
+You can now use _just_ the `Tappable` component, or choose to use the `TapAndPinchable` (default export). Instructions will be added to the Readme with more information soon.
+
 ## v0.5.7 / 2015-07-30
 
 * fixed; removed former hacky attempts to handle the React eventpooling problem
