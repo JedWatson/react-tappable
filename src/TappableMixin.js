@@ -66,6 +66,7 @@ var Mixin = {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
+			this.initTouchmoveDetection();
 			this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
 		} else if (this.onPinchStart &&
 				(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
@@ -100,6 +101,18 @@ var Mixin = {
 				this._scrollPos.left += node.scrollLeft;
 			}
 			node = node.parentNode;
+		}
+	},
+
+	initTouchmoveDetection: function () {
+		this._touchmoveTriggeredTimes = 0;
+	},
+
+	cancelTouchmoveDetection: function () {
+		if (this._touchmoveDetectionTimeout) {
+			clearTimeout(this._touchmoveDetectionTimeout);
+			this._touchmoveDetectionTimeout = null;
+			this._touchmoveTriggeredTimes = 0;
 		}
 	},
 
@@ -140,7 +153,17 @@ var Mixin = {
 		if (this._initialTouch) {
 			this.processEvent(event);
 
-			if (this.detectScroll()) return this.endTouch(event);
+			if (this.detectScroll()) {
+				return this.endTouch(event);
+			} else {
+				if ((this._touchmoveTriggeredTimes)++ === 0) {
+					this._touchmoveDetectionTimeout = setTimeout(function() {
+						if (this._touchmoveTriggeredTimes === 1) {
+							this.endTouch(event);
+						}
+					}.bind(this), 64);
+				}
+			}
 
 			this.props.onTouchMove && this.props.onTouchMove(event);
 			this._lastTouch = getTouchProps(event.touches[0]);
@@ -194,6 +217,7 @@ var Mixin = {
 	},
 
 	endTouch: function (event, callback) {
+		this.cancelTouchmoveDetection();
 		this.cancelPressDetection();
 		this.clearActiveTimeout();
 		if (event && this.props.onTouchEnd) {
