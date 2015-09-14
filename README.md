@@ -44,7 +44,7 @@ React-tappable generates a React component (defaults to `<span>`) and binds touc
 
 To disable default event handling (e.g. scrolling) set the `preventDefault` prop.
 
-```
+```js
 var Tappable = require('react-tappable');
 
 <Tappable onTap={this.handleTapEvent}>Tap me</Tappable>
