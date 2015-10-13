@@ -4,6 +4,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Tappable = require('react-tappable');
 
 var App = React.createClass({
@@ -16,7 +17,7 @@ var App = React.createClass({
 		};
 	},
 	componentDidUpdate: function componentDidUpdate() {
-		var log = this.refs.eventLog.getDOMNode();
+		var log = this.refs.eventLog;
 		log.scrollTop = log.scrollHeight;
 	},
 	handleEvent: function handleEvent(name /*, event*/) {
@@ -109,6 +110,6 @@ var App = React.createClass({
 	}
 });
 
-React.render(React.createElement(App, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"react":undefined,"react-tappable":undefined}]},{},[1]);
+},{"react":undefined,"react-dom":undefined,"react-tappable":undefined}]},{},[1]);

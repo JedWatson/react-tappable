@@ -12,9 +12,10 @@ module.exports.touchStyles = touchStyles;
 module.exports.Mixin = TappableMixin;
 
 },{"./TappableMixin":2,"./getComponent":3,"./touchStyles":4}],2:[function(require,module,exports){
+(function (global){
 'use strict';
 
-var React = (window.React);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 function getTouchProps(touch) {
 	if (!touch) return {};
@@ -292,12 +293,14 @@ var Mixin = {
 
 module.exports = Mixin;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],3:[function(require,module,exports){
+(function (global){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var React = (window.React);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var touchStyles = require('./touchStyles');
 
 /**
@@ -360,6 +363,7 @@ module.exports = function (mixins) {
 	});
 };
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./touchStyles":4}],4:[function(require,module,exports){
 'use strict';
 
