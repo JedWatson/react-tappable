@@ -10,7 +10,7 @@ var App = React.createClass({
 		};
 	},
 	componentDidUpdate: function () {
-		var log = this.refs.eventLog.getDOMNode();
+		var log = this.refs.eventLog;
 		log.scrollTop = log.scrollHeight;
 	},
 	handleEvent: function (name/*, event*/) {
