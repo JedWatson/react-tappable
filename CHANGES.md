@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.7.0 / 2015-10-13
+
+Tappable is updated for React 0.14. If you're still using React 0.13, please continue to use `react-tappable@0.6.x`. There are no functional differences between v0.7.0 and v0.6.0.
+
 ## v0.6.0 / 2015-07-31
 
 This release contains a major refactor that makes `react-tappable` more modular, thanks to [Naman Goel](https://github.com/nmn)
