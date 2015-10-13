@@ -1,7 +1,7 @@
 {
   "name": "react-tappable",
   "main": "dist/react-tappable.min.js",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "homepage": "https://github.com/JedWatson/react-tappable",
   "authors": [
     "Jed Watson"
