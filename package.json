@@ -31,8 +31,8 @@
     "start": "gulp dev",
     "examples": "gulp dev:server",
     "lint": "eslint ./; true",
-    "publish:site": "gulp publish:examples",
-    "release": "gulp release",
+    "publish:site": "NODE_ENV=production gulp publish:examples",
+    "release": "NODE_ENV=production gulp release",
     "test": "echo \"no tests yet\" && exit 0",
     "watch": "gulp watch:lib"
   },
