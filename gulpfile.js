@@ -6,7 +6,8 @@ var taskConfig = {
 	component: {
 		name: 'Tappable',
 		dependencies: [
-			'react'
+			'react',
+			'react-dom'
 		]
 	},
 

@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Tappable = require('react-tappable');
 
 var App = React.createClass({
@@ -46,4 +47,4 @@ var App = React.createClass({
 	}
 });
 
-React.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));
