@@ -12,7 +12,6 @@ var App = React.createClass({
 
 	getInitialState: function getInitialState() {
 		return {
-			scrolling: false,
 			events: []
 		};
 	},
@@ -27,46 +26,15 @@ var App = React.createClass({
 			events: events
 		});
 	},
-	toggleScrolling: function toggleScrolling() {
-		console.log('scrolling: ' + !this.state.scrolling);
-		this.setState({
-			scrolling: !this.state.scrolling
-		});
-	},
 	render: function render() {
-		var events = {
-			onTap: this.handleEvent.bind(this, 'tap'),
-			onPress: this.handleEvent.bind(this, 'press'),
-			onTouchStart: this.handleEvent.bind(this, 'touchStart'),
-			// onTouchMove: this.handleEvent.bind(this, 'touchMove'),
-			onTouchEnd: this.handleEvent.bind(this, 'touchEnd'),
-			onMouseDown: this.handleEvent.bind(this, 'mouseDown'),
-			// onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
-			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
-			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
-		};
 		var nestedEvents = {
-			onTap: this.handleEvent.bind(this, 'tap (nested)')
+			onPinchStart: this.handleEvent.bind(this, 'pinch start'),
+			onPinchMove: this.handleEvent.bind(this, 'pinch move'),
+			onPinchEnd: this.handleEvent.bind(this, 'pinch end')
 		};
-		var toggleClass = this.state.scrolling ? 'scrolling-enabled' : 'scrolling-disabled';
 		return React.createElement(
 			'div',
 			{ className: 'example' },
-			React.createElement(
-				'div',
-				{ className: 'scrolling' },
-				React.createElement(
-					Tappable,
-					{ preventDefault: true, onTap: this.toggleScrolling, className: toggleClass },
-					React.createElement(
-						'span',
-						{ className: 'link' },
-						'Toggle Scrolling'
-					),
-					': ',
-					this.state.scrolling ? 'on' : 'off'
-				)
-			),
 			React.createElement(
 				'div',
 				{ className: 'left' },
@@ -76,13 +44,13 @@ var App = React.createClass({
 					'Tappable area:'
 				),
 				React.createElement(
-					Tappable,
-					_extends({ preventDefault: !this.state.scrolling, component: 'div', className: 'tappable-area' }, events),
+					'div',
+					{ className: 'tappable-area' },
 					'Touch me',
 					React.createElement(
 						Tappable,
 						_extends({ stopPropagation: true, className: 'nested-tappable' }, nestedEvents),
-						'Nested Tappable'
+						'Nested Pinchable'
 					)
 				)
 			),
