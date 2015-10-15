@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 function getTouchProps (touch) {
 	if (!touch) return {};
@@ -91,7 +92,8 @@ var Mixin = {
 		this._scrollPos = { top: 0, left: 0 };
 		this._scrollParents = [];
 		this._scrollParentPos = [];
-		var node = this.getDOMNode();
+		var node = ReactDOM.findDOMNode(this);
+		
 		while (node) {
 			if (node.scrollHeight > node.offsetHeight || node.scrollWidth > node.offsetWidth) {
 				this._scrollParents.push(node);
@@ -99,6 +101,7 @@ var Mixin = {
 				this._scrollPos.top += node.scrollTop;
 				this._scrollPos.left += node.scrollLeft;
 			}
+			
 			node = node.parentNode;
 		}
 	},
