@@ -2,6 +2,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 'use strict';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 function getTouchProps(touch) {
 	if (!touch) return {};
@@ -92,7 +93,8 @@ var Mixin = {
 		this._scrollPos = { top: 0, left: 0 };
 		this._scrollParents = [];
 		this._scrollParentPos = [];
-		var node = this.getDOMNode();
+		var node = ReactDOM.findDOMNode(this);
+
 		while (node) {
 			if (node.scrollHeight > node.offsetHeight || node.scrollWidth > node.offsetWidth) {
 				this._scrollParents.push(node);
@@ -100,6 +102,7 @@ var Mixin = {
 				this._scrollPos.top += node.scrollTop;
 				this._scrollPos.left += node.scrollLeft;
 			}
+
 			node = node.parentNode;
 		}
 	},
@@ -279,7 +282,7 @@ var Mixin = {
 
 module.exports = Mixin;
 
-},{"react":undefined}],2:[function(require,module,exports){
+},{"react":undefined,"react-dom":undefined}],2:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
