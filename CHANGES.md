@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.7.2 / 2015-12-13
+
+* added; new `classes` prop (`Object`) adds support for defining the complete className applied with the component is `active` or `inactive`. Handy for use with [css-modules](https://github.com/css-modules/css-modules), thanks [Rudin Swagerman](https://github.com/rudin).
+
 ## v0.7.1 / 2015-10-16
 
 * fixed; use `react-dom` for `findDOMNode`, thanks [Daniel Cousens](https://github.com/dcousens)
