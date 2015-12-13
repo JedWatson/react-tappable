@@ -320,6 +320,7 @@ module.exports = function (mixins) {
 			component: React.PropTypes.any, // component to create
 			className: React.PropTypes.string, // optional className
 			classBase: React.PropTypes.string, // base for generated classNames
+			classes: React.PropTypes.object, // object containing the active and inactive class names
 			style: React.PropTypes.object, // additional style properties for the component
 			disabled: React.PropTypes.bool // only applies to buttons
 		},
@@ -337,6 +338,10 @@ module.exports = function (mixins) {
 
 			if (props.className) {
 				className += ' ' + props.className;
+			}
+
+			if (props.classes) {
+				className += ' ' + (this.state.isActive ? props.classes.active : props.classes.inactive);
 			}
 
 			var style = {};
