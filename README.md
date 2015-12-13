@@ -54,8 +54,9 @@ var Tappable = require('react-tappable');
 
 * `activeDelay` ms delay before the `-active` class is added, defaults to `0`
 * `component` component to render, defaults to `'span'`
-* `className` optional class name for the component
+* `classes` optional object containing `active` and `inactive` class names to apply to the component; useful with [css-modules](https://github.com/css-modules/css-modules)
 * `classBase` base to use for the active/inactive classes
+* `className` optional class name for the component
 * `moveThreshold` px to allow movement before cancelling a tap; defaults to `100`
 * `pressDelay` ms delay before a press event is detected, defaults to `1000`
 * `pressMoveThreshold` px to allow movement before ignoring long presses; defaults to `5`
