@@ -16,7 +16,7 @@ module.exports.Mixin = TappableMixin;
 'use strict';
 
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-var ReactDOM = require('react-dom');
+var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 
 function getTouchProps(touch) {
 	if (!touch) return {};
@@ -297,7 +297,7 @@ var Mixin = {
 module.exports = Mixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react-dom":undefined}],3:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (global){
 'use strict';
 
