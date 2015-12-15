@@ -23,7 +23,8 @@
     "react-dom": "^0.14.0"
   },
   "browserify-shim": {
-    "react": "global:React"
+    "react": "global:React",
+    "react-dom": "global:ReactDOM"
   },
   "scripts": {
     "build": "gulp clean && NODE_ENV=production gulp build",
