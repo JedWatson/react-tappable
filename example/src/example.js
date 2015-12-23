@@ -36,7 +36,9 @@ var App = React.createClass({
 			onMouseDown: this.handleEvent.bind(this, 'mouseDown'),
 			// onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
-			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
+			onMouseOut: this.handleEvent.bind(this, 'mouseOut'),
+			onKeyDown: this.handleEvent.bind(this, 'keyDown'),
+			onKeyUp: this.handleEvent.bind(this, 'keyUp')
 		};
 		var nestedEvents = {
 			onTap: this.handleEvent.bind(this, 'tap (nested)')
@@ -51,6 +53,7 @@ var App = React.createClass({
 				</div>
 				<div className="left">
 					<h3>Tappable area:</h3>
+					<Tappable component="button" stopPropagation {...events}>Tappable Button</Tappable>
 					<Tappable preventDefault={!this.state.scrolling} component="div" className="tappable-area" {...events}>
 						Touch me
 						<Tappable stopPropagation className="nested-tappable" {...nestedEvents}>Nested Tappable</Tappable>
