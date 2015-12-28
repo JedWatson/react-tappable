@@ -43,7 +43,9 @@ var App = React.createClass({
 			onMouseDown: this.handleEvent.bind(this, 'mouseDown'),
 			// onMouseMove: this.handleEvent.bind(this, 'mouseMove'),
 			onMouseUp: this.handleEvent.bind(this, 'mouseUp'),
-			onMouseOut: this.handleEvent.bind(this, 'mouseOut')
+			onMouseOut: this.handleEvent.bind(this, 'mouseOut'),
+			onKeyDown: this.handleEvent.bind(this, 'keyDown'),
+			onKeyUp: this.handleEvent.bind(this, 'keyUp')
 		};
 		var nestedEvents = {
 			onTap: this.handleEvent.bind(this, 'tap (nested)')
@@ -74,6 +76,11 @@ var App = React.createClass({
 					'h3',
 					null,
 					'Tappable area:'
+				),
+				React.createElement(
+					Tappable,
+					_extends({ component: 'button', stopPropagation: true }, events),
+					'Tappable Button'
 				),
 				React.createElement(
 					Tappable,
