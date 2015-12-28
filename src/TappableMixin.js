@@ -267,7 +267,6 @@ var Mixin = {
 		this.processEvent(event);
 		this.props.onKeyUp && this.props.onKeyUp(event);
 		this.props.onTap && this.props.onTap(event);
-
 		this._keyDown = false;
 		this.cancelPressDetection();
 		this.setState({
@@ -278,7 +277,7 @@ var Mixin = {
 	onKeyDown: function (event) {
 		if (this.props.onKeyDown && this.props.onKeyDown(event) === false) return;
 		if (event.which !== SPACE_KEY && event.which !== ENTER_KEY) return;
-
+		if (this._keyDown) return;
 		this.initPressDetection(event, this.endKeyEvent);
 		this.processEvent(event);
 		this._keyDown = true;
