@@ -1,6 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+const SPACE_KEY = 32;
+const ENTER_KEY = 13;
+
 function getTouchProps (touch) {
 	if (!touch) return {};
 	return {
@@ -28,7 +31,9 @@ var Mixin = {
 		onMouseDown: React.PropTypes.func,           // pass-through mouse event
 		onMouseUp: React.PropTypes.func,             // pass-through mouse event
 		onMouseMove: React.PropTypes.func,           // pass-through mouse event
-		onMouseOut: React.PropTypes.func             // pass-through mouse event
+		onMouseOut: React.PropTypes.func,            // pass-through mouse event
+		onKeyDown: React.PropTypes.func,             // pass-through key event
+		onKeyUp: React.PropTypes.func,               // pass-through key event
 	},
 
 	getDefaultProps: function () {
@@ -93,7 +98,7 @@ var Mixin = {
 		this._scrollParents = [];
 		this._scrollParentPos = [];
 		var node = ReactDOM.findDOMNode(this);
-		
+
 		while (node) {
 			if (node.scrollHeight > node.offsetHeight || node.scrollWidth > node.offsetWidth) {
 				this._scrollParents.push(node);
@@ -101,7 +106,7 @@ var Mixin = {
 				this._scrollPos.top += node.scrollTop;
 				this._scrollPos.left += node.scrollLeft;
 			}
-			
+
 			node = node.parentNode;
 		}
 	},
@@ -257,6 +262,39 @@ var Mixin = {
 		});
 	},
 
+	onKeyUp: function (event) {
+		if (!this._keyDown) return;
+		this.processEvent(event);
+		this.props.onKeyUp && this.props.onKeyUp(event);
+		this.props.onTap && this.props.onTap(event);
+
+		this._keyDown = false;
+		this.cancelPressDetection();
+		this.setState({
+			isActive: false
+		});
+	},
+
+	onKeyDown: function (event) {
+		if (this.props.onKeyDown && this.props.onKeyDown(event) === false) return;
+		if (event.which !== SPACE_KEY && event.which !== ENTER_KEY) return;
+
+		this.initPressDetection(event, this.endKeyEvent);
+		this.processEvent(event);
+		this._keyDown = true;
+		this.setState({
+			isActive: true
+		});
+	},
+
+	endKeyEvent: function () {
+		this.cancelPressDetection();
+		this._keyDown = false;
+		this.setState({
+			isActive: false
+		});
+	},
+
 	cancelTap: function () {
 		this.endTouch();
 		this._mouseDown = false;
@@ -270,7 +308,9 @@ var Mixin = {
 			onMouseDown: this.onMouseDown,
 			onMouseUp: this.onMouseUp,
 			onMouseMove: this.onMouseMove,
-			onMouseOut: this.onMouseOut
+			onMouseOut: this.onMouseOut,
+			onKeyDown: this.onKeyDown,
+			onKeyUp: this.onKeyUp,
 		};
 	}
 };
