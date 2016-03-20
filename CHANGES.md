@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.8.1 / 2015-03-20
+
+Updated to allow compatiblity with React 15.x
+
 ## v0.8.0 / 2015-12-28
 
 Tappable now supports keyboard events; a `keyDown` event with the `space` or `enter` keys followed by a `keyUp` event will fire the `onTap` handler.
