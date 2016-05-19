@@ -10,7 +10,7 @@ The events mimic their native equivalents as closely as possible:
 * when you start scrolling a parent element, the touch event is cancelled
 * if the `onPress` property is set, it will cancel the touch event after the press happens
 
-When touch events are not supported, it will fall back to mouse events.
+When touch events are not supported, it will fall back to mouse events. Keyboard events are also supported, emulating the behaviour of native button controls.
 
 
 ## Demo & Examples
@@ -99,6 +99,8 @@ Pinch events come with a special object with additional data to actually be more
 
 The following native event handlers can also be specified.
 
+* `onKeyDown`
+* `onKeyUp`
 * `onTouchStart`
 * `onTouchMove`
 * `onTouchEnd`
@@ -107,7 +109,7 @@ The following native event handlers can also be specified.
 * `onMouseMove`
 * `onMouseOut`
 
-Returning `false` from `onTouchStart` or `onMouseDown` handlers will prevent `Tappable` from handling the event.
+Returning `false` from `onKeyDown`, `onMouseDown`, or `onTouchStart` handlers will prevent `Tappable` from handling the event.
 
 ## Changelog
 
@@ -117,7 +119,7 @@ See [CHANGES.md](https://github.com/JedWatson/react-tappable/blob/master/CHANGES
 
 (The MIT License)
 
-Copyright (c) 2015 Jed Watson
+Copyright (c) 2016 Jed Watson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -1,5 +1,17 @@
 # React-Tappable Changelog
 
+## v0.8.1 / 2015-03-20
+
+Updated to allow compatiblity with React 15.x
+
+## v0.8.0 / 2015-12-28
+
+Tappable now supports keyboard events; a `keyDown` event with the `space` or `enter` keys followed by a `keyUp` event will fire the `onTap` handler.
+
+New props `onKeyDown` and `onKeyUp` have also been added; return `false` from `onKeyDown` to prevent event handling.
+
+Thanks to [Will Binns-Smith](https://github.com/wbinnssmith) for this update.
+
 ## v0.7.2 / 2015-12-13
 
 * added; new `classes` prop (`Object`) adds support for defining the complete className applied with the component is `active` or `inactive`. Handy for use with [css-modules](https://github.com/css-modules/css-modules), thanks [Rudin Swagerman](https://github.com/rudin).

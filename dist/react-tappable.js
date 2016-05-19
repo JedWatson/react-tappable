@@ -18,6 +18,9 @@ module.exports.Mixin = TappableMixin;
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 
+var SPACE_KEY = 32;
+var ENTER_KEY = 13;
+
 function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
@@ -45,9 +48,11 @@ var Mixin = {
 		onMouseDown: React.PropTypes.func, // pass-through mouse event
 		onMouseUp: React.PropTypes.func, // pass-through mouse event
 		onMouseMove: React.PropTypes.func, // pass-through mouse event
-		onMouseOut: React.PropTypes.func // pass-through mouse event
-	},
+		onMouseOut: React.PropTypes.func, // pass-through mouse event
+		onKeyDown: React.PropTypes.func, // pass-through key event
+		onKeyUp: React.PropTypes.func },
 
+	// pass-through key event
 	getDefaultProps: function getDefaultProps() {
 		return {
 			activeDelay: 0,
@@ -276,6 +281,38 @@ var Mixin = {
 		});
 	},
 
+	onKeyUp: function onKeyUp(event) {
+		if (!this._keyDown) return;
+		this.processEvent(event);
+		this.props.onKeyUp && this.props.onKeyUp(event);
+		this.props.onTap && this.props.onTap(event);
+		this._keyDown = false;
+		this.cancelPressDetection();
+		this.setState({
+			isActive: false
+		});
+	},
+
+	onKeyDown: function onKeyDown(event) {
+		if (this.props.onKeyDown && this.props.onKeyDown(event) === false) return;
+		if (event.which !== SPACE_KEY && event.which !== ENTER_KEY) return;
+		if (this._keyDown) return;
+		this.initPressDetection(event, this.endKeyEvent);
+		this.processEvent(event);
+		this._keyDown = true;
+		this.setState({
+			isActive: true
+		});
+	},
+
+	endKeyEvent: function endKeyEvent() {
+		this.cancelPressDetection();
+		this._keyDown = false;
+		this.setState({
+			isActive: false
+		});
+	},
+
 	cancelTap: function cancelTap() {
 		this.endTouch();
 		this._mouseDown = false;
@@ -289,7 +326,9 @@ var Mixin = {
 			onMouseDown: this.onMouseDown,
 			onMouseUp: this.onMouseUp,
 			onMouseMove: this.onMouseMove,
-			onMouseOut: this.onMouseOut
+			onMouseOut: this.onMouseOut,
+			onKeyDown: this.onKeyDown,
+			onKeyUp: this.onKeyUp
 		};
 	}
 };
