@@ -44,11 +44,25 @@ React-tappable generates a React component (defaults to `<span>`) and binds touc
 
 To disable default event handling (e.g. scrolling) set the `preventDefault` prop.
 
-```js
-var Tappable = require('react-tappable');
+```jsx
+import Tappable = from 'react-tappable';
 
 <Tappable onTap={this.handleTapEvent}>Tap me</Tappable>
 ```
+
+For a lighter component, you can opt-in to just the features you need:
+
+```jsx
+import Tappable = from 'react-tappable/Tappable';
+import Pinchable = from 'react-tappable/Pinchable';
+import TapAndPinchable from 'react-tappable/TapAndPinchable';
+
+<Tappable onTap={this.handleTapEvent}>I respond to Tap events</Tappable>
+<Pinchable onPinch={this.handlePinch}>I respond to Pinch events</Tappable>
+<TapAndPinchable onTap={this.handleTapEvent} onPinch={this.handlePinch}>In respond to both!</Tappable>
+```
+
+The `TapAndPinchable` component is the default one you get when you just import `react-tappable`.
 
 ### Properties
 
@@ -78,17 +92,17 @@ These are the special events implemented by `Tappable`.
 
 Pinch events come with a special object with additional data to actually be more useful than the native events:
 
-* touches: Array of Objects - {identifier, pageX, pageY} - raw data from the event
-* center: Object - {x, y} - Calculated center between the two touch points
-* angle: Degrees - angle of the line connecting the two touch points to the X-axis
-* distance: Number of pixels - beween the two touch points
-* displacement: Object {x, y} - offset of the center since the pinch began
-* displacementVelocity: Object {x, y} : Pixels/ms - Immediate velocity of the displacement
-* rotation: degrees - delta rotation since the beginning of the gesture
-* rotationVelocity: degrees/millisecond - immediate rotational velocity
-* zoom: Number - Zoom factor - ratio between distance between the two touch points now over initial
-* zoomVelocity: zoomFactor/millisecond - immediate velocity of zooming
-* time: milliseconds since epoch - Timestamp
+* `touches`: Array of Objects - {identifier, pageX, pageY} - raw data from the event
+* `center`: Object - {x, y} - Calculated center between the two touch points
+* `angle`: Degrees - angle of the line connecting the two touch points to the X-axis
+* `distance`: Number of pixels - beween the two touch points
+* `displacement`: Object {x, y} - offset of the center since the pinch began
+* `displacementVelocity`: Object {x, y} : Pixels/ms - Immediate velocity of the displacement
+* `rotation`: degrees - delta rotation since the beginning of the gesture
+* `rotationVelocity`: degrees/millisecond - immediate rotational velocity
+* `zoom`: Number - Zoom factor - ratio between distance between the two touch points now over initial
+* `zoomVelocity`: zoomFactor/millisecond - immediate velocity of zooming
+* `time`: milliseconds since epoch - Timestamp
 
 #### Known Issues
 
