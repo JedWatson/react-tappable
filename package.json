@@ -1,6 +1,6 @@
 {
   "name": "react-tappable",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Touch / Tappable Event Handling Component for React",
   "main": "lib/TapAndPinchable.js",
   "author": "Jed Watson",
