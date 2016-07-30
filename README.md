@@ -58,8 +58,8 @@ import Pinchable = from 'react-tappable/Pinchable';
 import TapAndPinchable from 'react-tappable/TapAndPinchable';
 
 <Tappable onTap={this.handleTapEvent}>I respond to Tap events</Tappable>
-<Pinchable onPinch={this.handlePinch}>I respond to Pinch events</Tappable>
-<TapAndPinchable onTap={this.handleTapEvent} onPinch={this.handlePinch}>In respond to both!</Tappable>
+<Pinchable onPinch={this.handlePinch}>I respond to Pinch events</Pinchable>
+<TapAndPinchable onTap={this.handleTapEvent} onPinch={this.handlePinch}>In respond to both!</TapAndPinchable>
 ```
 
 The `TapAndPinchable` component is the default one you get when you just import `react-tappable`.
