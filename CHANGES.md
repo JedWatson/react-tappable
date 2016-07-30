@@ -1,6 +1,13 @@
 # React-Tappable Changelog
 
-## v0.8.1 / 2015-03-20
+## v0.8.2 / 2016-07-30
+
+* fixed; warnings from React 15.2+ about invalid dom attributes have been resolved, thanks [Olivier Tassinari](https://github.com/oliviertassinari)
+* fixed; pinch angle calculations have been fixed, thanks [Yusuke Shibata](https://github.com/yusukeshibata)
+* fixed; `detectScroll()` didn't work properly on Android, thanks [Fangzhou Li](https://github.com/riophae)
+* fixed; `ReactDOM` global is now used in the `dist` build
+
+## v0.8.1 / 2016-03-20
 
 Updated to allow compatiblity with React 15.x
 
