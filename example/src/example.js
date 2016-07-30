@@ -56,7 +56,7 @@ var App = React.createClass({
 					<Tappable component="button" stopPropagation {...events}>Tappable Button</Tappable>
 					<Tappable preventDefault={!this.state.scrolling} component="div" className="tappable-area" {...events}>
 						Touch me
-						<Tappable stopPropagation className="nested-tappable" {...nestedEvents}>Nested Tappable</Tappable>
+						<Tappable preventDefault={!this.state.scrolling} stopPropagation className="nested-tappable" {...nestedEvents}>Nested Tappable</Tappable>
 					</Tappable>
 				</div>
 				<div className="right">
