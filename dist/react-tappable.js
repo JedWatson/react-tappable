@@ -16,7 +16,7 @@ module.exports.Mixin = TappableMixin;
 'use strict';
 
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-var ReactDOM = require('react-dom');
+var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 
 var SPACE_KEY = 32;
 var ENTER_KEY = 13;
@@ -89,6 +89,7 @@ var Mixin = {
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
+			this.initTouchmoveDetection();
 			this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
 		} else if (this.onPinchStart && (this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2) {
 			this.onPinchStart(event);
@@ -123,6 +124,18 @@ var Mixin = {
 			}
 
 			node = node.parentNode;
+		}
+	},
+
+	initTouchmoveDetection: function initTouchmoveDetection() {
+		this._touchmoveTriggeredTimes = 0;
+	},
+
+	cancelTouchmoveDetection: function cancelTouchmoveDetection() {
+		if (this._touchmoveDetectionTimeout) {
+			clearTimeout(this._touchmoveDetectionTimeout);
+			this._touchmoveDetectionTimeout = null;
+			this._touchmoveTriggeredTimes = 0;
 		}
 	},
 
@@ -163,7 +176,17 @@ var Mixin = {
 		if (this._initialTouch) {
 			this.processEvent(event);
 
-			if (this.detectScroll()) return this.endTouch(event);
+			if (this.detectScroll()) {
+				return this.endTouch(event);
+			} else {
+				if (this._touchmoveTriggeredTimes++ === 0) {
+					this._touchmoveDetectionTimeout = setTimeout((function () {
+						if (this._touchmoveTriggeredTimes === 1) {
+							this.endTouch(event);
+						}
+					}).bind(this), 64);
+				}
+			}
 
 			this.props.onTouchMove && this.props.onTouchMove(event);
 			this._lastTouch = getTouchProps(event.touches[0]);
@@ -221,6 +244,7 @@ var Mixin = {
 	},
 
 	endTouch: function endTouch(event, callback) {
+		this.cancelTouchmoveDetection();
 		this.cancelPressDetection();
 		this.clearActiveTimeout();
 		if (event && this.props.onTouchEnd) {
@@ -336,7 +360,7 @@ var Mixin = {
 module.exports = Mixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react-dom":undefined}],3:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function (global){
 'use strict';
 

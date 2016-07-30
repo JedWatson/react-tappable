@@ -1,4 +1,4 @@
-/* 
+/*
 // Examples Stylesheet
 // -------------------
 */
@@ -15,6 +15,12 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+button {
+  border-radius: 5px;
+  background: #eee;
+  border: 1px solid #666;
+  margin-bottom: 10px;
 }
 .container {
   margin-left: auto;

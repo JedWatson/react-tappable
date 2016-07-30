@@ -88,7 +88,7 @@ var App = React.createClass({
 					'Touch me',
 					React.createElement(
 						Tappable,
-						_extends({ stopPropagation: true, className: 'nested-tappable' }, nestedEvents),
+						_extends({ preventDefault: !this.state.scrolling, stopPropagation: true, className: 'nested-tappable' }, nestedEvents),
 						'Nested Tappable'
 					)
 				)
