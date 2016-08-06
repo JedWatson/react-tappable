@@ -45,7 +45,7 @@ React-tappable generates a React component (defaults to `<span>`) and binds touc
 To disable default event handling (e.g. scrolling) set the `preventDefault` prop.
 
 ```jsx
-import Tappable = from 'react-tappable';
+import Tappable from 'react-tappable';
 
 <Tappable onTap={this.handleTapEvent}>Tap me</Tappable>
 ```
@@ -53,9 +53,9 @@ import Tappable = from 'react-tappable';
 For a lighter component, you can opt-in to just the features you need:
 
 ```jsx
-import Tappable = from 'react-tappable/Tappable';
-import Pinchable = from 'react-tappable/Pinchable';
-import TapAndPinchable from 'react-tappable/TapAndPinchable';
+import Tappable from 'react-tappable/lib/Tappable';
+import Pinchable from 'react-tappable/lib/Pinchable';
+import TapAndPinchable from 'react-tappable/lib/TapAndPinchable';
 
 <Tappable onTap={this.handleTapEvent}>I respond to Tap events</Tappable>
 <Pinchable onPinch={this.handlePinch}>I respond to Pinch events</Pinchable>
