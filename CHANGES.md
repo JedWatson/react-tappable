@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.8.3 / 2016-08-07
+
+* fixed; React 15.2+ compatiblity patches from the last version were lost during build, correctly included in this version
+
 ## v0.8.2 / 2016-07-30
 
 * fixed; warnings from React 15.2+ about invalid dom attributes have been resolved, thanks [Olivier Tassinari](https://github.com/oliviertassinari)
