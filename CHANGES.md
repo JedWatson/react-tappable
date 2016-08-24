@@ -1,5 +1,9 @@
 # React-Tappable Changelog
 
+## v0.8.4 / 2016-08-24
+
+* fixed; Actually include React 15.2+ compatability patches this time!
+
 ## v0.8.3 / 2016-08-07
 
 * fixed; React 15.2+ compatiblity patches from the last version were lost during build, correctly included in this version
