@@ -417,6 +417,10 @@ module.exports = function (mixins) {
 				handlers: this.handlers
 			}, this.handlers());
 
+			delete newComponentProps.activeDelay;
+			delete newComponentProps.classBase;
+			delete newComponentProps.classes;
+			delete newComponentProps.handlers;
 			delete newComponentProps.onTap;
 			delete newComponentProps.onPress;
 			delete newComponentProps.onPinchStart;
