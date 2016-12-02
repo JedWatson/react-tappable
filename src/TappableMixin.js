@@ -73,7 +73,11 @@ var Mixin = {
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
 			this.initTouchmoveDetection();
-			this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
+			if (this.props.activeDelay > 0) {
+				this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
+			} else {
+				this.makeActive();
+			}
 		} else if (this.onPinchStart &&
 				(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
 				event.touches.length === 2) {
