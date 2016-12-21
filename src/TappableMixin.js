@@ -198,8 +198,8 @@ var Mixin = {
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
 			}
-			if (movement.x > (this.props.moveThresholdX || this.props.moveThreshold) ||
-				  movement.y > (this.props.moveThresholdY || this.props.moveThreshold)) {
+			if (movement.x > (this.props.moveXThreshold || this.props.moveThreshold) ||
+				  movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
 				if (this.state.isActive) {
 					this.setState({
 						isActive: false
@@ -225,8 +225,8 @@ var Mixin = {
 			this.processEvent(event);
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
-			if (movement.x <= (this.props.moveThresholdX || this.props.moveThreshold) &&
-			    movement.y <= (this.props.moveThresholdY || this.props.moveThreshold) &&
+			if (movement.x <= (this.props.moveXThreshold || this.props.moveThreshold) &&
+			    movement.y <= (this.props.moveYThreshold || this.props.moveThreshold) &&
 					this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = () => {
