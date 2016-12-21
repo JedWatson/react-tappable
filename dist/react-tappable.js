@@ -97,18 +97,14 @@ var Mixin = {
 	},
 
 	onTouchStart: function onTouchStart(event) {
-		console.log('1');
 		if (this.props.onTouchStart && this.props.onTouchStart(event) === false) return;
-		console.log('2');
 		this.processEvent(event);
 		window._blockMouseEvents = true;
 		if (event.touches.length === 1) {
-			console.log('3');
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
 			this.initTouchmoveDetection();
-			console.log('setTimeout', this.props.activeDelay);
 			if (this.props.activeDelay === 0) {
 				this.makeActive();
 			} else {
@@ -120,9 +116,7 @@ var Mixin = {
 	},
 
 	makeActive: function makeActive() {
-		console.log('makeActive');
 		if (!this.isMounted()) return;
-		console.log('really');
 		this.clearActiveTimeout();
 		this.setState({
 			isActive: true
@@ -219,11 +213,8 @@ var Mixin = {
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
 			}
-			console.log('moving', movement.y);
 			if (movement.x > (this.props.moveThresholdX || this.props.moveThreshold) || movement.y > (this.props.moveThresholdY || this.props.moveThreshold)) {
-				console.log('a', this.state.isActive);
 				if (this.state.isActive) {
-					console.log('d');
 					this.setState({
 						isActive: false
 					});
@@ -231,7 +222,6 @@ var Mixin = {
 					this.clearActiveTimeout();
 				}
 			} else if (this.props.allowReactivation) {
-				console.log('b');
 				if (!this.state.isActive && !this._activeTimeout) {
 					this.setState({
 						isActive: true
