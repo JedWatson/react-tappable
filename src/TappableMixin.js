@@ -201,13 +201,17 @@ var Mixin = {
 			if (movement.x > (this.props.moveXThreshold || this.props.moveThreshold) ||
 				  movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
 				if (this.state.isActive) {
-					this.setState({
-						isActive: false
-					});
+					if (this.props.allowReactivation) {
+						this.setState({
+							isActive: false
+						});
+					} else {
+						return this.endTouch(event);
+					}
 				} else if (this._activeTimeout) {
 					this.clearActiveTimeout();
 				}
-			} else if (this.props.allowReactivation) {
+			} else {
 				if (!this.state.isActive && !this._activeTimeout) {
 					this.setState({
 						isActive: true
