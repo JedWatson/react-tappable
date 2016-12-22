@@ -213,15 +213,19 @@ var Mixin = {
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
 			}
-			if (movement.x > (this.props.moveThresholdX || this.props.moveThreshold) || movement.y > (this.props.moveThresholdY || this.props.moveThreshold)) {
+			if (movement.x > (this.props.moveXThreshold || this.props.moveThreshold) || movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
 				if (this.state.isActive) {
-					this.setState({
-						isActive: false
-					});
+					if (this.props.allowReactivation) {
+						this.setState({
+							isActive: false
+						});
+					} else {
+						return this.endTouch(event);
+					}
 				} else if (this._activeTimeout) {
 					this.clearActiveTimeout();
 				}
-			} else if (this.props.allowReactivation) {
+			} else {
 				if (!this.state.isActive && !this._activeTimeout) {
 					this.setState({
 						isActive: true
@@ -241,7 +245,7 @@ var Mixin = {
 			this.processEvent(event);
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
-			if (movement.x <= (this.props.moveThresholdX || this.props.moveThreshold) && movement.y <= (this.props.moveThresholdY || this.props.moveThreshold) && this.props.onTap) {
+			if (movement.x <= (this.props.moveXThreshold || this.props.moveThreshold) && movement.y <= (this.props.moveYThreshold || this.props.moveThreshold) && this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = function () {
 					var finalParentScrollPos = _this._scrollParents.map(function (node) {
@@ -437,6 +441,7 @@ module.exports = function (mixins) {
 			}, this.handlers());
 
 			delete newComponentProps.activeDelay;
+			delete newComponentProps.allowReactivation;
 			delete newComponentProps.classBase;
 			delete newComponentProps.classes;
 			delete newComponentProps.handlers;
@@ -445,7 +450,11 @@ module.exports = function (mixins) {
 			delete newComponentProps.onPinchStart;
 			delete newComponentProps.onPinchMove;
 			delete newComponentProps.onPinchEnd;
+			delete newComponentProps.onDeactivate;
+			delete newComponentProps.onReactivate;
 			delete newComponentProps.moveThreshold;
+			delete newComponentProps.moveXThreshold;
+			delete newComponentProps.moveYThreshold;
 			delete newComponentProps.pressDelay;
 			delete newComponentProps.pressMoveThreshold;
 			delete newComponentProps.preventDefault;
