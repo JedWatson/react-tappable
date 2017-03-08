@@ -72,6 +72,7 @@ var Mixin = {
 		this.processEvent(event);
 		window._blockMouseEvents = true;
 		if (event.touches.length === 1) {
+			this._moveJourney = { x: 0, y: 0 };
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
@@ -125,11 +126,15 @@ var Mixin = {
 		}
 	},
 
-	calculateMovement: function calculateMovement(touch) {
+	minusMovement: function minusMovement(a, b) {
 		return {
-			x: Math.abs(touch.clientX - this._initialTouch.clientX),
-			y: Math.abs(touch.clientY - this._initialTouch.clientY)
+			x: Math.abs(a.clientX - b.clientX),
+			y: Math.abs(a.clientY - b.clientY)
 		};
+	},
+
+	calculateMovement: function calculateMovement(touch) {
+		return this.minusMovement(touch, this._initialTouch);
 	},
 
 	detectScroll: function detectScroll() {
@@ -158,6 +163,12 @@ var Mixin = {
 		clearTimeout(this._pressTimeout);
 	},
 
+	cumulateJourney: function cumulateJourney(touchProps) {
+		var movement = this.minusMovement(touchProps, this._lastTouch);
+		this._moveJourney.x += movement.x;
+		this._moveJourney.y += movement.y;
+	},
+
 	onTouchMove: function onTouchMove(event) {
 		if (this._initialTouch) {
 			this.processEvent(event);
@@ -174,8 +185,13 @@ var Mixin = {
 				}
 			}
 
+			//this._hasTouchMoved = true
 			this.props.onTouchMove && this.props.onTouchMove(event);
-			this._lastTouch = getTouchProps(event.touches[0]);
+			// thi
+			var touchProps = getTouchProps(event.touches[0]);
+			this.cumulateJourney(touchProps);
+			this._lastTouch = touchProps;
+
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
@@ -208,7 +224,8 @@ var Mixin = {
 			this.processEvent(event);
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
-			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
+			var journey = this._moveJourney;
+			if (journey.x <= this.props.moveThreshold && journey.y <= this.props.moveThreshold && movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = function () {
 					var finalParentScrollPos = _this._scrollParents.map(function (node) {
@@ -227,6 +244,8 @@ var Mixin = {
 			this.onPinchEnd(event);
 			event.preventDefault();
 		}
+
+		this._hasTouchMoved = false;
 	},
 
 	endTouch: function endTouch(event, callback) {
