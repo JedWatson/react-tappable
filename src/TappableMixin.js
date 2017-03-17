@@ -39,7 +39,7 @@ var Mixin = {
 	getDefaultProps: function () {
 		return {
 			activeDelay: 0,
-			moveThreshold: 100,
+			moveThreshold: 0,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
 		};
