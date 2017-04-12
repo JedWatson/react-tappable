@@ -367,8 +367,9 @@ module.exports = Mixin;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var createReactClass = (typeof window !== "undefined" ? window['createReactClass'] : typeof global !== "undefined" ? global['createReactClass'] : null);
 var PropTypes = (typeof window !== "undefined" ? window['PropTypes'] : typeof global !== "undefined" ? global['PropTypes'] : null);
+var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var touchStyles = require('./touchStyles');
 
 /**
@@ -376,7 +377,7 @@ var touchStyles = require('./touchStyles');
  * ==================
  */
 module.exports = function (mixins) {
-	return React.createClass({
+	return createReactClass({
 		displayName: 'Tappable',
 
 		mixins: mixins,
