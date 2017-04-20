@@ -1,4 +1,5 @@
 var React = require('react');
+var PropTypes = require('prop-types');
 
 function getPinchProps (touches) {
 	return {
@@ -13,9 +14,9 @@ function getPinchProps (touches) {
 
 var Mixin = {
 	propTypes: {
-		onPinchStart: React.PropTypes.func,          // fires when a pinch gesture is started
-		onPinchMove: React.PropTypes.func,           // fires on every touch-move when a pinch action is active
-		onPinchEnd: React.PropTypes.func             // fires when a pinch action ends
+		onPinchStart: PropTypes.func,          // fires when a pinch gesture is started
+		onPinchMove: PropTypes.func,           // fires on every touch-move when a pinch action is active
+		onPinchEnd: PropTypes.func             // fires when a pinch action ends
 	},
 
 	onPinchStart: function (event) {
