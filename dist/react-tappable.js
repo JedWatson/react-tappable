@@ -15,7 +15,6 @@ module.exports.Mixin = TappableMixin;
 (function (global){
 'use strict';
 
-var PropTypes = (typeof window !== "undefined" ? window['PropTypes'] : typeof global !== "undefined" ? global['PropTypes'] : null);
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 
@@ -34,24 +33,24 @@ function getTouchProps(touch) {
 
 var Mixin = {
 	propTypes: {
-		moveThreshold: PropTypes.number, // pixels to move before cancelling tap
-		activeDelay: PropTypes.number, // ms to wait before adding the `-active` class
-		pressDelay: PropTypes.number, // ms to wait before detecting a press
-		pressMoveThreshold: PropTypes.number, // pixels to move before cancelling press
-		preventDefault: PropTypes.bool, // whether to preventDefault on all events
-		stopPropagation: PropTypes.bool, // whether to stopPropagation on all events
+		moveThreshold: React.PropTypes.number, // pixels to move before cancelling tap
+		activeDelay: React.PropTypes.number, // ms to wait before adding the `-active` class
+		pressDelay: React.PropTypes.number, // ms to wait before detecting a press
+		pressMoveThreshold: React.PropTypes.number, // pixels to move before cancelling press
+		preventDefault: React.PropTypes.bool, // whether to preventDefault on all events
+		stopPropagation: React.PropTypes.bool, // whether to stopPropagation on all events
 
-		onTap: PropTypes.func, // fires when a tap is detected
-		onPress: PropTypes.func, // fires when a press is detected
-		onTouchStart: PropTypes.func, // pass-through touch event
-		onTouchMove: PropTypes.func, // pass-through touch event
-		onTouchEnd: PropTypes.func, // pass-through touch event
-		onMouseDown: PropTypes.func, // pass-through mouse event
-		onMouseUp: PropTypes.func, // pass-through mouse event
-		onMouseMove: PropTypes.func, // pass-through mouse event
-		onMouseOut: PropTypes.func, // pass-through mouse event
-		onKeyDown: PropTypes.func, // pass-through key event
-		onKeyUp: PropTypes.func },
+		onTap: React.PropTypes.func, // fires when a tap is detected
+		onPress: React.PropTypes.func, // fires when a press is detected
+		onTouchStart: React.PropTypes.func, // pass-through touch event
+		onTouchMove: React.PropTypes.func, // pass-through touch event
+		onTouchEnd: React.PropTypes.func, // pass-through touch event
+		onMouseDown: React.PropTypes.func, // pass-through mouse event
+		onMouseUp: React.PropTypes.func, // pass-through mouse event
+		onMouseMove: React.PropTypes.func, // pass-through mouse event
+		onMouseOut: React.PropTypes.func, // pass-through mouse event
+		onKeyDown: React.PropTypes.func, // pass-through key event
+		onKeyUp: React.PropTypes.func },
 
 	// pass-through key event
 	getDefaultProps: function getDefaultProps() {
@@ -368,7 +367,6 @@ module.exports = Mixin;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var createReactClass = (typeof window !== "undefined" ? window['createReactClass'] : typeof global !== "undefined" ? global['createReactClass'] : null);
-var PropTypes = (typeof window !== "undefined" ? window['PropTypes'] : typeof global !== "undefined" ? global['PropTypes'] : null);
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var touchStyles = require('./touchStyles');
 
@@ -383,12 +381,12 @@ module.exports = function (mixins) {
 		mixins: mixins,
 
 		propTypes: {
-			component: PropTypes.any, // component to create
-			className: PropTypes.string, // optional className
-			classBase: PropTypes.string, // base for generated classNames
-			classes: PropTypes.object, // object containing the active and inactive class names
-			style: PropTypes.object, // additional style properties for the component
-			disabled: PropTypes.bool // only applies to buttons
+			component: React.PropTypes.any, // component to create
+			className: React.PropTypes.string, // optional className
+			classBase: React.PropTypes.string, // base for generated classNames
+			classes: React.PropTypes.object, // object containing the active and inactive class names
+			style: React.PropTypes.object, // additional style properties for the component
+			disabled: React.PropTypes.bool // only applies to buttons
 		},
 
 		getDefaultProps: function getDefaultProps() {
