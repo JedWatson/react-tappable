@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 var touchStyles = require('./touchStyles');
 
@@ -12,12 +13,12 @@ module.exports = function (mixins) {
 		mixins: mixins,
 
 		propTypes: {
-			component: React.PropTypes.any,           // component to create
-			className: React.PropTypes.string,        // optional className
-			classBase: React.PropTypes.string,        // base for generated classNames
-			classes: React.PropTypes.object,          // object containing the active and inactive class names
-			style: React.PropTypes.object,            // additional style properties for the component
-			disabled: React.PropTypes.bool            // only applies to buttons
+			component: PropTypes.any,           // component to create
+			className: PropTypes.string,        // optional className
+			classBase: PropTypes.string,        // base for generated classNames
+			classes: PropTypes.object,          // object containing the active and inactive class names
+			style: PropTypes.object,            // additional style properties for the component
+			disabled: PropTypes.bool            // only applies to buttons
 		},
 
 		getDefaultProps: function () {

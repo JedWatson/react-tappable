@@ -10,6 +10,7 @@
     "url": "https://github.com/JedWatson/react-tappable.git"
   },
   "peerDependencies": {
+    "prop-types": "^15.5.8",
     "react": "^0.14 || ^15.0.0-rc || ^15.0.0",
     "react-dom": "^0.14 || ^15.0.0-rc || ^15.0.0"
   },
@@ -18,11 +19,13 @@
     "eslint": "^1.6.0",
     "eslint-plugin-react": "^3.5.1",
     "gulp": "^3.9.1",
+    "prop-types": "^15.5.8",
     "react": "^0.14 || ^15.0.0-rc || ^15.0.0",
     "react-component-gulp-tasks": "^0.7.7",
     "react-dom": "^0.14 || ^15.0.0-rc || ^15.0.0"
   },
   "browserify-shim": {
+    "prop-types": "global:PropTypes",
     "react": "global:React",
     "react-dom": "global:ReactDOM"
   },
