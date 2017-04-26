@@ -1,8 +1,9 @@
+var createReactClass = require('create-react-class');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Tappable = require('react-tappable');
 
-var App = React.createClass({
+var App = createReactClass({
 	getInitialState: function () {
 		return {
 			events: []

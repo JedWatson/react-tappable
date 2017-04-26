@@ -1,3 +1,4 @@
+var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 var React = require('react');
 var touchStyles = require('./touchStyles');
@@ -7,7 +8,7 @@ var touchStyles = require('./touchStyles');
  * ==================
  */
 module.exports = function (mixins) {
-	return React.createClass({
+	return createReactClass({
 		displayName: 'Tappable',
 
 		mixins: mixins,
