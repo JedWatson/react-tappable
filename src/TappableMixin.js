@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 
-function getTouchProps (touch) {
+function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
 		pageX: touch.pageX,
@@ -40,7 +40,7 @@ var Mixin = {
 	getDefaultProps: function () {
 		return {
 			activeDelay: 0,
-			moveThreshold: 100,
+			moveThreshold: 0,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
 		};
@@ -70,6 +70,7 @@ var Mixin = {
 		this.processEvent(event);
 		window._blockMouseEvents = true;
 		if (event.touches.length === 1) {
+			this._moveJourney = {x: 0, y: 0}
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
@@ -80,8 +81,8 @@ var Mixin = {
 				this.makeActive();
 			}
 		} else if (this.onPinchStart &&
-				(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
-				event.touches.length === 2) {
+			(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
+			event.touches.length === 2) {
 			this.onPinchStart(event);
 		}
 	},
@@ -100,7 +101,7 @@ var Mixin = {
 	},
 
 	initScrollDetection: function () {
-		this._scrollPos = { top: 0, left: 0 };
+		this._scrollPos = {top: 0, left: 0};
 		this._scrollParents = [];
 		this._scrollParentPos = [];
 		var node = ReactDOM.findDOMNode(this);
@@ -129,15 +130,19 @@ var Mixin = {
 		}
 	},
 
-	calculateMovement: function (touch) {
+	minusMovement: function (a, b) {
 		return {
-			x: Math.abs(touch.clientX - this._initialTouch.clientX),
-			y: Math.abs(touch.clientY - this._initialTouch.clientY)
+			x: Math.abs(a.clientX - b.clientX),
+			y: Math.abs(a.clientY - b.clientY)
 		};
 	},
 
+	calculateMovement: function (touch) {
+		return this.minusMovement(touch, this._initialTouch)
+	},
+
 	detectScroll: function () {
-		var currentScrollPos = { top: 0, left: 0 };
+		var currentScrollPos = {top: 0, left: 0};
 		for (var i = 0; i < this._scrollParents.length; i++) {
 			currentScrollPos.top += this._scrollParents[i].scrollTop;
 			currentScrollPos.left += this._scrollParents[i].scrollLeft;
@@ -162,6 +167,12 @@ var Mixin = {
 		clearTimeout(this._pressTimeout);
 	},
 
+	cumulateJourney: function (touchProps) {
+		var movement = this.minusMovement(touchProps, this._lastTouch)
+		this._moveJourney.x += movement.x
+		this._moveJourney.y += movement.y
+	},
+
 	onTouchMove: function (event) {
 		if (this._initialTouch) {
 			this.processEvent(event);
@@ -170,7 +181,7 @@ var Mixin = {
 				return this.endTouch(event);
 			} else {
 				if ((this._touchmoveTriggeredTimes)++ === 0) {
-					this._touchmoveDetectionTimeout = setTimeout(function() {
+					this._touchmoveDetectionTimeout = setTimeout(function () {
 						if (this._touchmoveTriggeredTimes === 1) {
 							this.endTouch(event);
 						}
@@ -178,8 +189,13 @@ var Mixin = {
 				}
 			}
 
+			//this._hasTouchMoved = true
 			this.props.onTouchMove && this.props.onTouchMove(event);
-			this._lastTouch = getTouchProps(event.touches[0]);
+			// thi
+			var touchProps = getTouchProps(event.touches[0]);
+			this.cumulateJourney(touchProps);
+			this._lastTouch = touchProps;
+
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
@@ -210,7 +226,10 @@ var Mixin = {
 			this.processEvent(event);
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
-			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
+			var journey = this._moveJourney;
+			if (journey.x <= this.props.moveThreshold && journey.y <= this.props.moveThreshold &&
+				movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold &&
+				this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = () => {
 					var finalParentScrollPos = this._scrollParents.map(node => node.scrollTop + node.scrollLeft);
@@ -227,6 +246,8 @@ var Mixin = {
 			this.onPinchEnd(event);
 			event.preventDefault();
 		}
+
+		this._hasTouchMoved = false
 	},
 
 	endTouch: function (event, callback) {
