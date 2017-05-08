@@ -2019,6 +2019,10 @@ var Mixin = {
 
 	initPressDetection: function initPressDetection(event, callback) {
 		if (!this.props.onPress) return;
+
+		// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
+		event.persist();
+
 		this._pressTimeout = setTimeout((function () {
 			this.props.onPress(event);
 			callback();
