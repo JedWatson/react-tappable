@@ -70,8 +70,6 @@ var Mixin = {
 		this.processEvent(event);
 		window._blockMouseEvents = true;
 		if (event.touches.length === 1) {
-			// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
-			event.persist();
 			this._initialTouch = this._lastTouch = getTouchProps(event.touches[0]);
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
@@ -154,6 +152,10 @@ var Mixin = {
 
 	initPressDetection: function (event, callback) {
 		if (!this.props.onPress) return;
+		
+		// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
+		event.persist();
+		
 		this._pressTimeout = setTimeout(function () {
 			this.props.onPress(event);
 			callback();
