@@ -29,13 +29,15 @@ Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
 ## Installation
 
-The easiest way to use React-tappable is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), etc).
-
-You can also use the standalone build by including `dist/react-tappable.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+The easiest way to use React-tappable is to install it from npm.
 
 ```
 npm install react-tappable --save
 ```
+
+Ensure to include it in your own React build process (using [Browserify](http://browserify.org), etc).
+
+You could also use the standalone build by including `dist/react-tappable.js` in your page;  but, if you do this, make sure you have already included React, and that it is available globally.
 
 
 ## Usage
