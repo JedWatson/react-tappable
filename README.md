@@ -29,13 +29,15 @@ Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
 ## Installation
 
-The easiest way to use React-tappable is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), etc).
-
-You can also use the standalone build by including `dist/react-tappable.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+The easiest way to use React-tappable is to install it from npm.
 
 ```
 npm install react-tappable --save
 ```
+
+Ensure to include it in your own React build process (using [Browserify](http://browserify.org), etc).
+
+You could also use the standalone build by including `dist/react-tappable.js` in your page;  but, if you do this, make sure you have already included React, and that it is available globally.
 
 
 ## Usage
@@ -129,14 +131,4 @@ Returning `false` from `onKeyDown`, `onMouseDown`, or `onTouchStart` handlers wi
 
 See [CHANGES.md](https://github.com/JedWatson/react-tappable/blob/master/CHANGES.md)
 
-## License
-
-(The MIT License)
-
-Copyright (c) 2016 Jed Watson
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+## License [MIT](LICENSE)

@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -16,30 +17,28 @@ function getTouchProps (touch) {
 
 var Mixin = {
 	propTypes: {
-		moveThreshold: React.PropTypes.number,       // pixels to move before cancelling tap
-		moveXThreshold: React.PropTypes.number,      // pixels on the x axis to move before cancelling tap (overrides moveThreshold)
-		moveYThreshold: React.PropTypes.number,      // pixels on the y axis to move before cancelling tap (overrides moveThreshold)
-		activeDelay: React.PropTypes.number,         // ms to wait before adding the `-active` class
-		allowReactivation: React.PropTypes.bool,     // after moving outside of the moveThreshold will you allow
-																								 // reactivation by moving back within the moveThreshold?
-		pressDelay: React.PropTypes.number,          // ms to wait before detecting a press
-		pressMoveThreshold: React.PropTypes.number,  // pixels to move before cancelling press
-		preventDefault: React.PropTypes.bool,        // whether to preventDefault on all events
-		stopPropagation: React.PropTypes.bool,       // whether to stopPropagation on all events
+		moveThreshold: PropTypes.number,       // pixels to move before cancelling tap
+		moveXThreshold: PropTypes.number,      // pixels on the x axis to move before cancelling tap (overrides moveThreshold)
+		moveYThreshold: PropTypes.number,      // pixels on the y axis to move before cancelling tap (overrides moveThreshold)
+		allowReactivation: PropTypes.bool,     // after moving outside of the moveThreshold will you allow
+																					 // reactivation by moving back within the moveThreshold?
+		activeDelay: PropTypes.number,         // ms to wait before adding the `-active` class
+		pressDelay: PropTypes.number,          // ms to wait before detecting a press
+		pressMoveThreshold: PropTypes.number,  // pixels to move before cancelling press
+		preventDefault: PropTypes.bool,        // whether to preventDefault on all events
+		stopPropagation: PropTypes.bool,       // whether to stopPropagation on all events
 
-		onTap: React.PropTypes.func,                 // fires when a tap is detected
-		onDeactivate: React.PropTypes.func,          // fires when you move outside the moveThreshold
-		onReactivate: React.PropTypes.func,          // fires when you move back within the moveThreshold
-		onPress: React.PropTypes.func,               // fires when a press is detected
-		onTouchStart: React.PropTypes.func,          // pass-through touch event
-		onTouchMove: React.PropTypes.func,           // pass-through touch event
-		onTouchEnd: React.PropTypes.func,            // pass-through touch event
-		onMouseDown: React.PropTypes.func,           // pass-through mouse event
-		onMouseUp: React.PropTypes.func,             // pass-through mouse event
-		onMouseMove: React.PropTypes.func,           // pass-through mouse event
-		onMouseOut: React.PropTypes.func,            // pass-through mouse event
-		onKeyDown: React.PropTypes.func,             // pass-through key event
-		onKeyUp: React.PropTypes.func,               // pass-through key event
+		onTap: PropTypes.func,                 // fires when a tap is detected
+		onPress: PropTypes.func,               // fires when a press is detected
+		onTouchStart: PropTypes.func,          // pass-through touch event
+		onTouchMove: PropTypes.func,           // pass-through touch event
+		onTouchEnd: PropTypes.func,            // pass-through touch event
+		onMouseDown: PropTypes.func,           // pass-through mouse event
+		onMouseUp: PropTypes.func,             // pass-through mouse event
+		onMouseMove: PropTypes.func,           // pass-through mouse event
+		onMouseOut: PropTypes.func,            // pass-through mouse event
+		onKeyDown: PropTypes.func,             // pass-through key event
+		onKeyUp: PropTypes.func,               // pass-through key event
 	},
 
 	getDefaultProps: function () {
@@ -88,10 +87,10 @@ var Mixin = {
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
 			this.initTouchmoveDetection();
-			if (this.props.activeDelay === 0) {
-				this.makeActive();
-			} else {
+			if (this.props.activeDelay > 0) {
 				this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
+			} else {
+				this.makeActive();
 			}
 		} else if (this.onPinchStart &&
 				(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
@@ -166,6 +165,10 @@ var Mixin = {
 
 	initPressDetection: function (event, callback) {
 		if (!this.props.onPress) return;
+
+		// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
+		event.persist();
+
 		this._pressTimeout = setTimeout(function () {
 			this.props.onPress(event);
 			callback();

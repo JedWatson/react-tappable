@@ -15,6 +15,7 @@ module.exports.Mixin = TappableMixin;
 (function (global){
 'use strict';
 
+var PropTypes = (typeof window !== "undefined" ? window['PropTypes'] : typeof global !== "undefined" ? global['PropTypes'] : null);
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null);
 
@@ -33,36 +34,29 @@ function getTouchProps(touch) {
 
 var Mixin = {
 	propTypes: {
-		moveThreshold: React.PropTypes.number, // pixels to move before cancelling tap
-		moveXThreshold: React.PropTypes.number, // pixels on the x axis to move before cancelling tap (overrides moveThreshold)
-		moveYThreshold: React.PropTypes.number, // pixels on the y axis to move before cancelling tap (overrides moveThreshold)
-		activeDelay: React.PropTypes.number, // ms to wait before adding the `-active` class
-		allowReactivation: React.PropTypes.bool, // after moving outside of the moveThreshold will you allow
-		// reactivation by moving back within the moveThreshold?
-		pressDelay: React.PropTypes.number, // ms to wait before detecting a press
-		pressMoveThreshold: React.PropTypes.number, // pixels to move before cancelling press
-		preventDefault: React.PropTypes.bool, // whether to preventDefault on all events
-		stopPropagation: React.PropTypes.bool, // whether to stopPropagation on all events
+		moveThreshold: PropTypes.number, // pixels to move before cancelling tap
+		activeDelay: PropTypes.number, // ms to wait before adding the `-active` class
+		pressDelay: PropTypes.number, // ms to wait before detecting a press
+		pressMoveThreshold: PropTypes.number, // pixels to move before cancelling press
+		preventDefault: PropTypes.bool, // whether to preventDefault on all events
+		stopPropagation: PropTypes.bool, // whether to stopPropagation on all events
 
-		onTap: React.PropTypes.func, // fires when a tap is detected
-		onDeactivate: React.PropTypes.func, // fires when you move outside the moveThreshold
-		onReactivate: React.PropTypes.func, // fires when you move back within the moveThreshold
-		onPress: React.PropTypes.func, // fires when a press is detected
-		onTouchStart: React.PropTypes.func, // pass-through touch event
-		onTouchMove: React.PropTypes.func, // pass-through touch event
-		onTouchEnd: React.PropTypes.func, // pass-through touch event
-		onMouseDown: React.PropTypes.func, // pass-through mouse event
-		onMouseUp: React.PropTypes.func, // pass-through mouse event
-		onMouseMove: React.PropTypes.func, // pass-through mouse event
-		onMouseOut: React.PropTypes.func, // pass-through mouse event
-		onKeyDown: React.PropTypes.func, // pass-through key event
-		onKeyUp: React.PropTypes.func },
+		onTap: PropTypes.func, // fires when a tap is detected
+		onPress: PropTypes.func, // fires when a press is detected
+		onTouchStart: PropTypes.func, // pass-through touch event
+		onTouchMove: PropTypes.func, // pass-through touch event
+		onTouchEnd: PropTypes.func, // pass-through touch event
+		onMouseDown: PropTypes.func, // pass-through mouse event
+		onMouseUp: PropTypes.func, // pass-through mouse event
+		onMouseMove: PropTypes.func, // pass-through mouse event
+		onMouseOut: PropTypes.func, // pass-through mouse event
+		onKeyDown: PropTypes.func, // pass-through key event
+		onKeyUp: PropTypes.func },
 
 	// pass-through key event
 	getDefaultProps: function getDefaultProps() {
 		return {
 			activeDelay: 0,
-			allowReactivation: true,
 			moveThreshold: 100,
 			pressDelay: 1000,
 			pressMoveThreshold: 5
@@ -83,14 +77,6 @@ var Mixin = {
 		this.clearActiveTimeout();
 	},
 
-	componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-		if (this.state.isActive && !nextState.isActive) {
-			this.props.onDeactivate && this.props.onDeactivate();
-		} else if (!this.state.isActive && nextState.isActive) {
-			this.props.onReactivate && this.props.onReactivate();
-		}
-	},
-
 	processEvent: function processEvent(event) {
 		if (this.props.preventDefault) event.preventDefault();
 		if (this.props.stopPropagation) event.stopPropagation();
@@ -105,10 +91,10 @@ var Mixin = {
 			this.initScrollDetection();
 			this.initPressDetection(event, this.endTouch);
 			this.initTouchmoveDetection();
-			if (this.props.activeDelay === 0) {
-				this.makeActive();
-			} else {
+			if (this.props.activeDelay > 0) {
 				this._activeTimeout = setTimeout(this.makeActive, this.props.activeDelay);
+			} else {
+				this.makeActive();
 			}
 		} else if (this.onPinchStart && (this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) && event.touches.length === 2) {
 			this.onPinchStart(event);
@@ -181,6 +167,10 @@ var Mixin = {
 
 	initPressDetection: function initPressDetection(event, callback) {
 		if (!this.props.onPress) return;
+
+		// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
+		event.persist();
+
 		this._pressTimeout = setTimeout((function () {
 			this.props.onPress(event);
 			callback();
@@ -213,15 +203,11 @@ var Mixin = {
 			if (movement.x > this.props.pressMoveThreshold || movement.y > this.props.pressMoveThreshold) {
 				this.cancelPressDetection();
 			}
-			if (movement.x > (this.props.moveXThreshold || this.props.moveThreshold) || movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
+			if (movement.x > this.props.moveThreshold || movement.y > this.props.moveThreshold) {
 				if (this.state.isActive) {
-					if (this.props.allowReactivation) {
-						this.setState({
-							isActive: false
-						});
-					} else {
-						return this.endTouch(event);
-					}
+					this.setState({
+						isActive: false
+					});
 				} else if (this._activeTimeout) {
 					this.clearActiveTimeout();
 				}
@@ -245,7 +231,7 @@ var Mixin = {
 			this.processEvent(event);
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
-			if (movement.x <= (this.props.moveXThreshold || this.props.moveThreshold) && movement.y <= (this.props.moveYThreshold || this.props.moveThreshold) && this.props.onTap) {
+			if (movement.x <= this.props.moveThreshold && movement.y <= this.props.moveThreshold && this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = function () {
 					var finalParentScrollPos = _this._scrollParents.map(function (node) {
@@ -389,6 +375,8 @@ module.exports = Mixin;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var createReactClass = (typeof window !== "undefined" ? window['createReactClass'] : typeof global !== "undefined" ? global['createReactClass'] : null);
+var PropTypes = (typeof window !== "undefined" ? window['PropTypes'] : typeof global !== "undefined" ? global['PropTypes'] : null);
 var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 var touchStyles = require('./touchStyles');
 
@@ -397,18 +385,18 @@ var touchStyles = require('./touchStyles');
  * ==================
  */
 module.exports = function (mixins) {
-	return React.createClass({
+	return createReactClass({
 		displayName: 'Tappable',
 
 		mixins: mixins,
 
 		propTypes: {
-			component: React.PropTypes.any, // component to create
-			className: React.PropTypes.string, // optional className
-			classBase: React.PropTypes.string, // base for generated classNames
-			classes: React.PropTypes.object, // object containing the active and inactive class names
-			style: React.PropTypes.object, // additional style properties for the component
-			disabled: React.PropTypes.bool // only applies to buttons
+			component: PropTypes.any, // component to create
+			className: PropTypes.string, // optional className
+			classBase: PropTypes.string, // base for generated classNames
+			classes: PropTypes.object, // object containing the active and inactive class names
+			style: PropTypes.object, // additional style properties for the component
+			disabled: PropTypes.bool // only applies to buttons
 		},
 
 		getDefaultProps: function getDefaultProps() {
@@ -441,7 +429,6 @@ module.exports = function (mixins) {
 			}, this.handlers());
 
 			delete newComponentProps.activeDelay;
-			delete newComponentProps.allowReactivation;
 			delete newComponentProps.classBase;
 			delete newComponentProps.classes;
 			delete newComponentProps.handlers;
@@ -450,11 +437,7 @@ module.exports = function (mixins) {
 			delete newComponentProps.onPinchStart;
 			delete newComponentProps.onPinchMove;
 			delete newComponentProps.onPinchEnd;
-			delete newComponentProps.onDeactivate;
-			delete newComponentProps.onReactivate;
 			delete newComponentProps.moveThreshold;
-			delete newComponentProps.moveXThreshold;
-			delete newComponentProps.moveYThreshold;
 			delete newComponentProps.pressDelay;
 			delete newComponentProps.pressMoveThreshold;
 			delete newComponentProps.preventDefault;
