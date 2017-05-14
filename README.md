@@ -131,4 +131,6 @@ Returning `false` from `onKeyDown`, `onMouseDown`, or `onTouchStart` handlers wi
 
 See [CHANGES.md](https://github.com/JedWatson/react-tappable/blob/master/CHANGES.md)
 
-## License [MIT](LICENSE)
+## License
+
+Copyright (c) 2017 Jed Watson. [MIT](LICENSE)
