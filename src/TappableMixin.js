@@ -87,7 +87,6 @@ var Mixin = {
 	},
 
 	makeActive: function () {
-		if (!this.isMounted()) return;
 		this.clearActiveTimeout();
 		this.setState({
 			isActive: true
