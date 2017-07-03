@@ -54,7 +54,12 @@ var Mixin = {
 		};
 	},
 
+	componentDidMount: function () {
+		this.isMounted = true;
+	},
+
 	componentWillUnmount: function () {
+		this.isMounted = false;
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
 		this.clearActiveTimeout();
@@ -87,7 +92,7 @@ var Mixin = {
 	},
 
 	makeActive: function () {
-		if (!this.isMounted()) return;
+		if (!this.isMounted) return;
 		this.clearActiveTimeout();
 		this.setState({
 			isActive: true
@@ -152,10 +157,10 @@ var Mixin = {
 
 	initPressDetection: function (event, callback) {
 		if (!this.props.onPress) return;
-		
+
 		// SyntheticEvent objects are pooled, so persist the event so it can be referenced asynchronously
 		event.persist();
-		
+
 		this._pressTimeout = setTimeout(function () {
 			this.props.onPress(event);
 			callback();
