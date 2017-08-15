@@ -71,7 +71,12 @@ var Mixin = {
 		};
 	},
 
+	componentDidMount: function componentDidMount() {
+		this.isMounted = true;
+	},
+
 	componentWillUnmount: function componentWillUnmount() {
+		this.isMounted = false;
 		this.cleanupScrollDetection();
 		this.cancelPressDetection();
 		this.clearActiveTimeout();
@@ -102,7 +107,7 @@ var Mixin = {
 	},
 
 	makeActive: function makeActive() {
-		if (!this.isMounted()) return;
+		if (!this.isMounted) return;
 		this.clearActiveTimeout();
 		this.setState({
 			isActive: true
