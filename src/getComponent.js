@@ -52,7 +52,6 @@ module.exports = function (mixins) {
 			}, this.handlers());
 
 			delete newComponentProps.activeDelay;
-			delete newComponentProps.allowReactivation;
 			delete newComponentProps.classBase;
 			delete newComponentProps.classes;
 			delete newComponentProps.handlers;
@@ -61,11 +60,7 @@ module.exports = function (mixins) {
 			delete newComponentProps.onPinchStart;
 			delete newComponentProps.onPinchMove;
 			delete newComponentProps.onPinchEnd;
-			delete newComponentProps.onDeactivate;
-			delete newComponentProps.onReactivate;
 			delete newComponentProps.moveThreshold;
-			delete newComponentProps.moveXThreshold;
-			delete newComponentProps.moveYThreshold;
 			delete newComponentProps.pressDelay;
 			delete newComponentProps.pressMoveThreshold;
 			delete newComponentProps.preventDefault;
