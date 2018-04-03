@@ -16,6 +16,7 @@
     "react-dom": "^0.14 || ^15.0.0-rc || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^4.1.3",
     "babel-preset-es2015": "^6.24.1",
@@ -43,7 +44,8 @@
     "react-dom": "global:ReactDOM"
   },
   "scripts": {
-    "build": "browserify src/TapAndPinchable.js --standalone ReactTappable --transform [ babelify ] > dist/react-tappable.js",
+    "build": "babel src --out-dir lib",
+    "dist": "browserify src/TapAndPinchable.js --standalone ReactTappable --transform [ babelify ] > dist/react-tappable.js",
     "start": "gulp dev",
     "examples": "gulp dev:server",
     "lint": "eslint ./; true",
