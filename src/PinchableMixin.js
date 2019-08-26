@@ -7,7 +7,7 @@ function getPinchProps (touches) {
 			return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY };
 		}),
 		center: {x: (touches[0].pageX + touches[1].pageX) / 2, y: (touches[0].pageY + touches[1].pageY) / 2 },
-		angle: Math.atan() * (touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX) * 180 / Math.PI,
+		angle: Math.atan((touches[1].pageY - touches[0].pageY) / (touches[1].pageX - touches[0].pageX)) * 180 / Math.PI,
 		distance: Math.sqrt(Math.pow(Math.abs(touches[1].pageX - touches[0].pageX), 2) + Math.pow(Math.abs(touches[1].pageY - touches[0].pageY), 2))
 	};
 }
