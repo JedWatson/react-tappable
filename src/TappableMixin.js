@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 
-function getTouchProps (touch) {
+function getTouchProps(touch) {
 	if (!touch) return {};
 	return {
 		pageX: touch.pageX,
@@ -21,7 +21,7 @@ var Mixin = {
 		moveXThreshold: PropTypes.number,      // pixels on the x axis to move before cancelling tap (overrides moveThreshold)
 		moveYThreshold: PropTypes.number,      // pixels on the y axis to move before cancelling tap (overrides moveThreshold)
 		allowReactivation: PropTypes.bool,     // after moving outside of the moveThreshold will you allow
-																					 // reactivation by moving back within the moveThreshold?
+		// reactivation by moving back within the moveThreshold?
 		activeDelay: PropTypes.number,         // ms to wait before adding the `-active` class
 		pressDelay: PropTypes.number,          // ms to wait before detecting a press
 		pressMoveThreshold: PropTypes.number,  // pixels to move before cancelling press
@@ -70,12 +70,14 @@ var Mixin = {
 		this.clearActiveTimeout();
 	},
 
-	componentWillUpdate: function(nextProps, nextState) {
+	shouldComponentUpdate: function (nextProps, nextState) {
 		if (this.state.isActive && !nextState.isActive) {
 			this.props.onDeactivate && this.props.onDeactivate();
 		} else if (!this.state.isActive && nextState.isActive) {
 			this.props.onReactivate && this.props.onReactivate();
 		}
+
+		return true;
 	},
 
 	processEvent: function (event) {
@@ -98,8 +100,8 @@ var Mixin = {
 				this.makeActive();
 			}
 		} else if (this.onPinchStart &&
-				(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
-				event.touches.length === 2) {
+			(this.props.onPinchStart || this.props.onPinchMove || this.props.onPinchEnd) &&
+			event.touches.length === 2) {
 			this.onPinchStart(event);
 		}
 	},
@@ -192,7 +194,7 @@ var Mixin = {
 				return this.endTouch(event);
 			} else {
 				if ((this._touchmoveTriggeredTimes)++ === 0) {
-					this._touchmoveDetectionTimeout = setTimeout(function() {
+					this._touchmoveDetectionTimeout = setTimeout(function () {
 						if (this._touchmoveTriggeredTimes === 1) {
 							this.endTouch(event);
 						}
@@ -207,7 +209,7 @@ var Mixin = {
 				this.cancelPressDetection();
 			}
 			if (movement.x > (this.props.moveXThreshold || this.props.moveThreshold) ||
-				  movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
+				movement.y > (this.props.moveYThreshold || this.props.moveThreshold)) {
 				if (this.state.isActive) {
 					if (this.props.allowReactivation) {
 						this.setState({
@@ -238,8 +240,8 @@ var Mixin = {
 			var afterEndTouch;
 			var movement = this.calculateMovement(this._lastTouch);
 			if (movement.x <= (this.props.moveXThreshold || this.props.moveThreshold) &&
-			    movement.y <= (this.props.moveYThreshold || this.props.moveThreshold) &&
-					this.props.onTap) {
+				movement.y <= (this.props.moveYThreshold || this.props.moveThreshold) &&
+				this.props.onTap) {
 				event.preventDefault();
 				afterEndTouch = () => {
 					var finalParentScrollPos = this._scrollParents.map(node => node.scrollTop + node.scrollLeft);
